@@ -1,0 +1,7 @@
+[master]
+pi4b-mas01 ansible_host=192.168.1.110
+
+[worker]
+pi4b-wrk01 ansible_host=192.168.1.111
+pi4b-wrk02 ansible_host=192.168.1.112
+pi4b-wrk03 ansible_host=192.168.1.113

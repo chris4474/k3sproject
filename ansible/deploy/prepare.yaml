@@ -1,0 +1,10 @@
+---
+# prepare the PI for operations with Kubernetes
+- hosts: master:worker
+  tasks:
+  - include_tasks: tasks/iptables-legacy.yaml
+  - include_tasks: tasks/cgroup-features.yaml
+  - include_tasks: tasks/disable-swap.yaml
+  - include_tasks: tasks/update-hosts.yaml
+#  - include_tasks: tasks/log2ram.yaml
+#  - include_tasks: tasks/cron-logs.yaml

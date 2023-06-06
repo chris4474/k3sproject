@@ -1,0 +1,21 @@
+---
+- name: Scale Cluster
+  hosts: worker
+  gather_facts: no
+  tasks:
+
+  - name: Read the cluster Token
+    become: true
+    delegate_to: "{{ groups.master[0] }}"
+    shell: |
+      cat /var/lib/rancher/k3s/server/node-token
+    register: token
+
+  - name: join worker node
+    shell: |
+      export K3S_URL="{{ k3s_url }}"
+      export K3S_TOKEN="{{ k3s_token }}"
+      curl -sfL https://get.k3s.io | sh -
+    vars:
+      k3s_token: "{{ token.stdout_lines[0] }}"
+      k3s_url: "https://{{ groups.master[0] }}:6443"

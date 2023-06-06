@@ -1,0 +1,6 @@
+- name: Configure a job to delete *.gz files in /var/log
+  become: true
+  template:
+    src: templates/cron.del-logs.j2
+    dest: /etc/cron.hourly/del-logs
+    mode: 755

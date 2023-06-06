@@ -1,0 +1,15 @@
+---
+# Now k3s comes with its own iptables, it is safer to use these
+- name: delete iptables if present
+  become: true
+  apt:
+    name: iptables
+    update_cache: yes
+    state: absent
+- name: delete nftables if present
+  become: true
+  apt:
+    name: nftables
+    update_cache: yes
+    state: absent
+

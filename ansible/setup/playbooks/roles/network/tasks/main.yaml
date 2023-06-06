@@ -1,0 +1,46 @@
+- set_fact:
+    local_user: "{{ lookup('env','USER') }}"
+
+- name: Configure the Ethernet Interface for the next boot
+  become: true
+  blockinfile:
+    path: /etc/dhcpcd.conf
+    block: |
+      interface eth0
+      static ip_address={{ eth_ip }}
+      static routers={{ eth_gateway }}
+      static domain_name_servers={{ eth_nameservers }}
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ inventory_hostname }}"
+
+#- name: "Add user {{ local_user }}"
+#  become: true
+#  user:
+#    name: "{{ local_user }}"
+#    generate_ssh_key: yes
+
+#- name: Set authorized key taken from file
+#  become: true
+#  authorized_key:
+#    user: "{{ local_user }}"
+#    state: present
+#    key: "{{ ssh_public_key }}"
+
+#- name: Enable password less sudo for user {{ local_user }}
+#  become: true
+#  copy:
+#    dest: /etc/sudoers.d/{{ local_user }}-nopasswd
+#    content: "{{ local_user }} ALL=(ALL) NOPASSWD: ALL"
+
+- name: Change hostname
+  become: true
+  hostname:
+    name: "{{ inventory_hostname }}"
+
+#- name: Disable Wifi
+#  become: true
+#  blockinfile:
+#    path: /boot/config.txt
+#    block: |
+#      dtoverlay=disable-wifi
+#    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ inventory_hostname }}"
+

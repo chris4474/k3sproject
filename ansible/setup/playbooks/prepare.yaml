@@ -1,0 +1,14 @@
+- name: Configure Ethernet Network settings
+  gather_facts: no
+  hosts: all
+#  pre_tasks:
+#  - name: Install ssspass on the localhost
+#    become: true
+#    delegate_to: localhost
+#    run_once: true
+#    apt:
+#      name: sshpass
+#      state: present
+
+  roles:
+  - role: network

@@ -1,0 +1,14 @@
+[master]
+pi4b-mas01 ansible_host=192.168.1.8   eth_ip=192.168.1.110/24
+
+[worker]
+pi4b-wrk01 ansible_host=192.168.1.170 eth_ip=192.168.1.111/24
+pi4b-wrk02 ansible_host=192.168.1.117 eth_ip=192.168.1.112/24
+pi4b-wrk03 ansible_host=192.168.1.118 eth_ip=192.168.1.113/24
+
+[all:vars]
+ansible_user=chris
+eth_subnet=192.168.0.254
+eth_gateway=192.168.1.254
+eth_nameservers="192.168.1.11"
+ssh_public_key="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOzj7q1asEas4B14SZxmjrNdGm4V7v40NhTKCid5WWbR christophe@symphorines.home"

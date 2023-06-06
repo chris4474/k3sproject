@@ -1,0 +1,80 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hello-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-app-v7a
+  namespace: hello-app
+  labels:
+    app: hello
+spec:
+  selector:
+    matchLabels:
+      app: hello
+      tier: web
+  template:
+    metadata:
+      labels:
+        app: hello
+        tier: web
+    spec:
+      containers:
+      - name: hello-app-v7a
+        imagePullPolicy: Always
+        image: registry.symphorines.home/chris7444/hello-app:short-v7
+        env:
+        - name: HELLO_APP_VERSION
+          value: "hello-app 7A"
+        ports:
+        - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-app-v7b
+  namespace: hello-app
+  labels:
+    app: hello
+spec:
+  selector:
+    matchLabels:
+      app: hello
+      tier: web
+  template:
+    metadata:
+      labels:
+        app: hello
+        tier: web
+    spec:
+      containers:
+      - name: hello-app-v7b
+        imagePullPolicy: Always
+        image: registry.symphorines.home/chris7444/hello-app:short-v7
+        env:
+        - name: HELLO_APP_VERSION
+          value: "hello-app 7B"
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-app
+  namespace: hello-app
+  labels:
+    app: hello
+spec:
+  selector:
+    app: hello
+    tier: web
+  ports:
+  - port: 80
+    targetPort: 8080
+#  type: LoadBalancer
+#  loadBalancerIP: "YOUR.IP.ADDRESS.HERE"
+

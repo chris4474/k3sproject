@@ -1,0 +1,19 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-app
+  namespace: hello-app
+spec:
+  rules:
+  - host: hello-app.apps.symphorines.home
+    http:
+      paths:
+      - backend:
+          service:
+            name: hello-app
+            port:
+              number: 80
+        path: /
+        pathType: ImplementationSpecific
+

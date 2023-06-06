@@ -1,0 +1,22 @@
+- name: Populate /etc/hosts on the ansible controller
+  become: true
+  delegate_to: localhost
+  run_once: true
+  blockinfile:
+    path: /etc/hosts
+    block: |
+      {{ hostvars[item].ansible_host }} {{ hostvars[item].inventory_hostname }}
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ hostvars[item].inventory_hostname }}"
+  with_items:
+  - "{{ groups['all'] }}"
+
+- name: Populate /etc/hosts
+  become: true
+  blockinfile:
+    path: /etc/hosts
+    block: |
+      {{ hostvars[item].ansible_host }} {{ hostvars[item].inventory_hostname }}
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ hostvars[item].inventory_hostname }}"
+  with_items:
+  - "{{ groups['all'] }}"
+

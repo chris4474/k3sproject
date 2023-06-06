@@ -1,0 +1,18 @@
+---
+#
+# reboot all nodes
+#
+- hosts: master
+  gather_facts: no
+  tasks:
+
+  - name: Install k3s Server
+    shell: |
+       curl -sfL https://get.k3s.io | sh -
+
+  - name: retrieve k3s.yaml
+    become: true
+    fetch: 
+      src: /etc/rancher/k3s/k3s.yaml
+      dest: "{{ lookup('env','HOME') }}/k3s.yaml"
+      flat: yes

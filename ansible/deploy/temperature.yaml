@@ -1,0 +1,9 @@
+- hosts: all
+  gather_facts: no
+  tasks:
+  - name: Pies temperature
+    become: true
+    shell: |
+      /opt/vc/bin/vcgencmd measure_temp
+    register: temp
+  - debug: var=temp.stdout_lines[0]
