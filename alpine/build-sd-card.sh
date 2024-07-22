@@ -60,12 +60,12 @@ sudo cp ${HEADLESS_OVERLAY}  /media/$mydevname
 # La Configuration du wi-fi marche au premier boot mais pas aux suivants donc on ne fait pas
 #
 
-#cat <<EOF | sudo tee /media/$mydevname/wpa_supplicant.conf
-#network={
-#	ssid="symphorines"
-#	psk="${MYWIFI_KEY}"
-#}
-#EOF
+cat <<EOF | sudo tee /media/$mydevname/wpa_supplicant.conf
+network={
+	ssid="symphorines"
+	psk="${MYWIFI_KEY}"
+}
+EOF
 
 #
 # Configuration de la mémoire GPU, gpu_meme=xx ne marche pas dans un fichier include apparemment

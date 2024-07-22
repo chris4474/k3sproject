@@ -7,7 +7,7 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-app-v7a
+  name: hello-app-v9a
   namespace: hello-app
   labels:
     app: hello
@@ -23,19 +23,19 @@ spec:
         tier: web
     spec:
       containers:
-      - name: hello-app-v7a
-        imagePullPolicy: Always
-        image: registry.symphorines.home/chris7444/hello-app:short-v7
+      - name: hello-app-v9a
+        imagePullPolicy: IfNotPresent
+        image: registry.symphorines.home/chris7444/hello-app:short-v9
         env:
         - name: HELLO_APP_VERSION
-          value: "hello-app 7A"
+          value: "hello-app 9A"
         ports:
         - containerPort: 8080
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-app-v7b
+  name: hello-app-v9b
   namespace: hello-app
   labels:
     app: hello
@@ -51,12 +51,12 @@ spec:
         tier: web
     spec:
       containers:
-      - name: hello-app-v7b
+      - name: hello-app-v9b
         imagePullPolicy: Always
-        image: registry.symphorines.home/chris7444/hello-app:short-v7
+        image: registry.symphorines.home/chris7444/hello-app:short-v9
         env:
         - name: HELLO_APP_VERSION
-          value: "hello-app 7B"
+          value: "hello-app 9B"
         ports:
         - containerPort: 8080
 
