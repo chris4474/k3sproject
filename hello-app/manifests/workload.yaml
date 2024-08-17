@@ -52,7 +52,7 @@ spec:
     spec:
       containers:
       - name: hello-app-v9b
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         image: registry.symphorines.home/chris7444/hello-app:short-v9
         env:
         - name: HELLO_APP_VERSION

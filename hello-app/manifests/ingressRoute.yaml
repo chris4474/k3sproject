@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: hello-app
+  namespace: hello-app
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - kind: Rule
+    match: Host(`hello-app.alp.symphorines.home`)
+    services:
+    - name: hello-app
+      port: 80
+  tls:
+    secretName: apps-tls-secret
