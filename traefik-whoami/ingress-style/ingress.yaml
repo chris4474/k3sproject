@@ -2,13 +2,13 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress
-  namespace: whoami
+  namespace: traefik-whoami
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: web
 
 spec:
   rules:
-    - host: whoami.apps.symphorines.home
+    - host: whoami.alp.symphorines.home
       http:
         paths:
           - path: /whoami

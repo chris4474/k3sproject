@@ -2,6 +2,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: add-whoami
+  namespace: traefik-whoami
 spec:
   addPrefix:
     prefix: /whoami
@@ -10,12 +11,13 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: ingressroute
+  namespace: traefik-whoami
 spec:
   entryPoints:
   - web
   routes:
   - kind: Rule
-    match: Host(`whoami.apps.symphorines.home`)
+    match: Host(`whoami.alp.symphorines.home`)
     middlewares:
       - name: add-whoami
     services:
