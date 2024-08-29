@@ -17,7 +17,7 @@ spec:
   - web
   routes:
   - kind: Rule
-    match: Host(`whoami.alp.symphorines.home`)
+    match: Host(`whoami.${cluster}.symphorines.home`)
     middlewares:
       - name: add-whoami
     services:

@@ -8,7 +8,7 @@ metadata:
 
 spec:
   rules:
-    - host: whoami.alp.symphorines.home
+    - host: whoami.${cluster}.symphorines.home
       http:
         paths:
           - path: /whoami
