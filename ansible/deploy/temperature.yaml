@@ -4,6 +4,6 @@
   - name: Pies temperature
     become: true
     shell: |
-      /opt/vc/bin/vcgencmd measure_temp
+      /usr/bin/vcgencmd measure_temp
     register: temp
   - debug: var=temp.stdout_lines[0]
