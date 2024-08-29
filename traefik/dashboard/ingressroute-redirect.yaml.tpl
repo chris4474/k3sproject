@@ -7,7 +7,7 @@ spec:
   - web
   routes:
   - kind: Rule
-    match: Host("traefik.apps.symphorines.home")
+    match: Host("traefik.${cluster}.symphorines.home")
     services:
     - name: api@internal
       kind: TraefikService

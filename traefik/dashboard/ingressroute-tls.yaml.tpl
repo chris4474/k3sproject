@@ -8,7 +8,7 @@ spec:
   - websecure
   routes:
   - kind: Rule
-    match: Host("traefik.apps.symphorines.home")
+    match: Host("traefik.${cluster}.symphorines.home")
     middlewares:
     - name: dashboard-auth
     - name: dashboard-rewrite
@@ -16,7 +16,7 @@ spec:
     - name: traefik-dashboard
       port: 9000
   - kind: Rule
-    match: Host("traefik.apps.symphorines.home") && PathPrefix("/api")
+    match: Host("traefik.${cluster}.symphorines.home") && PathPrefix("/api")
     middlewares:
     - name: dashboard-auth
     services:
