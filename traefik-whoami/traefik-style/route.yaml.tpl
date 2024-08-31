@@ -14,7 +14,7 @@ metadata:
   namespace: traefik-whoami
 spec:
   entryPoints:
-  - web
+  - websecure
   routes:
   - kind: Rule
     match: Host(`whoami.${cluster}.symphorines.home`)
@@ -24,4 +24,5 @@ spec:
       - kind: Service
         name: whoami
         port: 80
-  
+  tls:
+    secretName: apps-tls-secret 

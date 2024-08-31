@@ -7,15 +7,17 @@ then
   exit
 fi
 
-
-kubectl create secret generic --namespace traefik-whoami apps-certificate \
-    --from-file=tls.key=$HOME/certs/apps/apps.key \
-    --from-file=tls.crt=<(cat $HOME/certs/apps/apps.crt $HOME/certs/apps/intCA.crt)
-
 #
 # Deploy the workload
 #
 kubectl apply -f workload.yaml
+
+#
+# Deploy the TLS Secret
+#
+kubectl create secret generic --namespace traefik-whoami apps-tls-secret \
+    --from-file=tls.key=$HOME/certs/apps/apps.key \
+    --from-file=tls.crt=<(cat $HOME/certs/apps/apps.crt $HOME/certs/apps/intCA.crt)
 
 #
 # Expose it using Traefik
