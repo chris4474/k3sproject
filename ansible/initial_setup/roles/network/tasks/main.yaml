@@ -1,0 +1,27 @@
+---
+- name: Change hostname
+  become: true
+  hostname:
+    name: "{{ inventory_hostname }}"
+
+- name: Configuring eth0
+  become: true
+  nmcli:
+    conn_name: '{{ eth_connection_name }}'
+    type: ethernet
+    ifname: 'eth0'
+    state: present
+    ip4:
+      - '{{ eth_ip }}'
+    gw4: '{{ eth_gateway }}'
+    routes4:
+      - 0.0.0.0/0 {{ eth_gateway }}
+    dns4: '{{ eth_nameservers }}'
+  register: res
+
+- name: Bring Connection Up
+  become: true
+  shell: |
+    nmcli connection up '{{ eth_connection_name }}'
+  when: res.changed
+
