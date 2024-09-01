@@ -1,18 +1,20 @@
-- name: Add log2ram repo
+---
+- name: Install azlux.fr gpg key
   become: true
-  apt_repository:
-    repo:  deb http://packages.azlux.fr/debian/ buster main
-    state: present
+  ansible.builtin.get_url:
+    url: https://azlux.fr/repo.gpg
+    dest: /usr/share/keyrings/azlux-archive-keyring.gpg
 
-- name: Add gpg key
+- name: Install the azlux repository
   become: true
-  apt_key:
-    url: https://azlux.fr/repo.gpg.key
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ {{ ansible_distribution_release }} main"
+    filename: azlux
     state: present
 
 - name: install log2ram
   become: true
-  apt:
+  ansible.builtin.apt:
     name: log2ram
     update_cache: yes
     state: present

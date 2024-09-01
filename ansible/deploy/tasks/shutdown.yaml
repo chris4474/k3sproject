@@ -1,29 +1,7 @@
 ---
 # shutdown node
-- name: Is Port 22 Open
-  delegate_to: localhost
-  wait_for:
-    host: "{{ ansible_host }}"
-    port: 22
-    timeout: 10
-    delay: 5
-    state: started
-  failed_when: false
-  register: res
 
 - name: Shutdown Node
   become: true
-  shell: "sleep 5 && shutdown -h now"
-  async: 1
-  poll: 0
-  when: res.state is defined
+  community.general.shutdown:
 
-- name: Wait for port 22 to close 
-  delegate_to: localhost
-  wait_for:
-    host: "{{ ansible_host }}"
-    port: 22
-    timeout: 20
-    delay: 5
-    state: stopped
-  when: res.state is defined

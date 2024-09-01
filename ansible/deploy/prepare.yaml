@@ -6,5 +6,6 @@
   - include_tasks: tasks/cgroup-features.yaml
   - include_tasks: tasks/disable-swap.yaml
   - include_tasks: tasks/update-hosts.yaml
-#  - include_tasks: tasks/log2ram.yaml
+  - include_tasks: tasks/deploy-cacert.yaml
+  - include_tasks: tasks/log2ram.yaml
 #  - include_tasks: tasks/cron-logs.yaml

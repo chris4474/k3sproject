@@ -1,5 +1,0 @@
----
-# prepare the PI for operations with Kubernetes
-- hosts: master:worker
-  tasks:
-  - include_tasks: tasks/log2ram.yaml

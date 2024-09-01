@@ -1,0 +1,15 @@
+#
+# Deploy my own Root CA
+#
+- name: Ensure local certs directory exists
+  file: state=directory path=/usr/local/share/ca-certificates
+  become: true
+
+- name: Install mycert
+  copy: src=ca.crt dest=/usr/local/share/ca-certificates/symphorines.home.crt
+  become: true
+
+- name: Update cert index
+  shell: /usr/sbin/update-ca-certificates
+  become: true
+  register: res
