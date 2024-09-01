@@ -23,4 +23,4 @@ spec:
     - name: traefik-dashboard
       port: 9000
   tls:
-    secretName: apps-tls-secret
+    secretName: ${secretname}

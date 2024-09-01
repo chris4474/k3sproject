@@ -1,3 +1,6 @@
+apps
+rpi
+alp
 ingressroute-redirect.yaml
 ingressroute-tls.yaml
 
