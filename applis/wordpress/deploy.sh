@@ -47,10 +47,14 @@ helm install wordpress bitnami/wordpress --version 23.1.10 --namespace=${namespa
 # Apply additional Manifests
 #
 [ ! -d $dirdest ] && mkdir $dirdest
-[ -f ${dirsrc}/*.yaml.tpl ] && for file in ${dirsrc}/*.yaml.tpl
+for file in ${dirsrc}/*.yaml.tpl
 do
-   outputfile=${dirdest}/$(basename $file ".tpl")
-   envsubst <$file  >${outputfile}
-   kubectl apply -f ${outputfile}
+   if [ -f $file ]
+   then
+     outputfile=${dirdest}/$(basename $file ".tpl")
+     envsubst <$file  >${outputfile}
+     kubectl apply -f ${outputfile}
+   fi
 done
+
 
