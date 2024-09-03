@@ -1258,7 +1258,7 @@ mariadb:
       storageClass: ""
       accessModes:
         - ReadWriteOnce
-      size: 8Gi
+      size: 1Gi
     ## MariaDB primary container's resource requests and limits
     ## ref: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
     ## We usually recommend not to specify default resources and to leave this as a conscious
