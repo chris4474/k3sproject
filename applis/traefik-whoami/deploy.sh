@@ -1,6 +1,10 @@
 #!/bin/bash
-cluster=$(kubectl config current-context)
-read -t 5 -p "About to deploy whoami app on cluster $cluster. Are you OK ? Y,N [N] " answer
+#
+# set environment specific variables
+#
+. env.sh
+
+read -t 10 -p "Deploy WHOAMI in cluster ${cluster^^} namespace ${namespace^^}. Are you OK ? Y,N [N] " answer
 if [ "$answer" != "Y" ] && [ "$answer" != "y" ]
 then
   echo Bye
@@ -8,20 +12,41 @@ then
 fi
 
 #
-# Deploy the workload
+# directories with template/yaml files
 #
-kubectl apply -f workload.yaml
+dirsrc=$(dirname $0)
+dirdest=$dirsrc/$cluster
+
 
 #
-# Deploy the TLS Secret
+# Generate initial manifests
 #
-kubectl create secret generic --namespace traefik-whoami apps-tls-secret \
-    --from-file=tls.key=$HOME/certs/apps/apps.key \
-    --from-file=tls.crt=<(cat $HOME/certs/apps/apps.crt $HOME/certs/apps/intCA.crt)
+file_namespace=$(mktemp /tmp/namespace.XXXX)
+file_tls_secret=$(mktemp /tmp/tls_secret.XXXX)
+envsubst <${dirsrc}/namespace.tpl >${file_namespace}
+envsubst <${dirsrc}/tls-secret.tpl >${file_tls_secret}
 
 #
-# Expose it using Traefik
+# Apply initial manifests
 #
-kubectl apply -f traefik-style/middlewares.yaml
-cluster=$cluster envsubst <traefik-style/route.yaml.tpl >/tmp/route-whoami.yaml
-kubectl apply -f /tmp/route-whoami.yaml
+kubectl apply -f ${file_namespace}
+kubectl apply -f ${file_tls_secret}
+
+#
+# the whoami workload is deployed in the last phase
+#
+
+#
+# Apply additional Manifests
+#
+[ ! -d $dirdest ] && mkdir $dirdest
+for file in ${dirsrc}/*.yaml.tpl
+do
+   if [ -f $file ]
+   then
+     outputfile=${dirdest}/$(basename $file ".tpl")
+     envsubst <$file  >${outputfile}
+     kubectl apply -f ${outputfile}
+   fi
+done
+

@@ -2,7 +2,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: add-whoami
-  namespace: traefik-whoami
+  namespace: ${namespace}
 spec:
   addPrefix:
     prefix: /whoami
@@ -10,8 +10,8 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: ingressroute
-  namespace: traefik-whoami
+  name: whoami
+  namespace: ${namespace}
 spec:
   entryPoints:
   - websecure
@@ -25,4 +25,4 @@ spec:
         name: whoami
         port: 80
   tls:
-    secretName: apps-tls-secret 
+    secretName: apps-certificate

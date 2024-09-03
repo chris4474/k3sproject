@@ -1,29 +1,23 @@
 ---
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: traefik-whoami
-
----
-apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: whoami-server
-  namespace: traefik-whoami
+  namespace: ${namespace}
 
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: whoami-client
-  namespace: traefik-whoami
+  namespace: ${namespace}
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: whoami
-  namespace: traefik-whoami
+  namespace: ${namespace}
 spec:
   replicas: 2
   selector:
@@ -45,7 +39,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: whoami-tcp
-  namespace: traefik-whoami
+  namespace: ${namespace}
 spec:
   replicas: 2
   selector:
@@ -67,7 +61,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: whoami
-  namespace: traefik-whoami
+  namespace: ${namespace}
   labels:
     app: whoami
 spec:
@@ -83,7 +77,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: whoami-tcp
-  namespace: traefik-whoami
+  namespace: ${namespace}
   labels:
     app: whoami-tcp
 spec:
@@ -99,7 +93,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: whoami-client
-  namespace: traefik-whoami
+  namespace: ${namespace}
 spec:
   serviceAccountName: whoami-client
   containers:
