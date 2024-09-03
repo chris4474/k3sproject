@@ -6,7 +6,7 @@ metadata:
   namespace: wordpress
 spec:
   rules:
-  - host: wordpress.alp.symphorines.home
+  - host: wordpress.${cluster}.symphorines.home
     http:
       paths:
       - backend:
@@ -16,4 +16,8 @@ spec:
               number: 80
         path: /
         pathType: ImplementationSpecific
+  tls:
+  - hosts:
+    - wordpress.${cluster}.symphorines.home
+    secretName: apps-certificate
 
