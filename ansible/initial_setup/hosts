@@ -1,5 +1,5 @@
 [master]
-pi4b-mas01 ansible_host=192.168.1.64   eth_ip=192.168.1.110/24
+pi4b-mas01 ansible_host=192.168.1.64 eth_ip=192.168.1.110/24
 
 [worker]
 pi4b-wrk01 ansible_host=192.168.1.51 eth_ip=192.168.1.111/24
