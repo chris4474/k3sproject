@@ -6,7 +6,14 @@
   gather_facts: no
   tasks:
 
+  - name: Ensure the directory /usr/local/bin directory exists
+    become: true
+    file:
+      path: /usr/local/bin  # The path of the directory to create
+      state: directory
+
   - name: Install k3s Server
+    become: true
     shell: |
        curl -sfL https://get.k3s.io | sh -
 
