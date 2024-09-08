@@ -67,7 +67,7 @@ extraDeploy: []
 image:
   registry: docker.io
   repository: bitnami/drupal
-  tag: 11.0.1-debian-12-r1
+  tag: 11.0.2-debian-12-r0
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -99,7 +99,7 @@ drupalSkipInstall: false
 ## @param drupalUsername User of the application
 ## ref: https://github.com/bitnami/containers/tree/main/bitnami/drupal#configuration
 ##
-drupalUsername: drupal
+drupalUsername: chris
 ## @param drupalPassword Application password
 ## Defaults to a random 10-character alphanumeric string if not set
 ## ref: https://github.com/bitnami/containers/tree/main/bitnami/drupal#configuration
@@ -108,7 +108,7 @@ drupalPassword: "drupal"
 ## @param drupalEmail Admin email
 ## ref: https://github.com/bitnami/containers/tree/main/bitnami/drupal#configuration
 ##
-drupalEmail: drupal@example.com
+drupalEmail: user@example.com
 ## @param allowEmptyPassword Allow DB blank passwords
 ## ref: https://github.com/bitnami/containers/tree/main/bitnami/drupal#environment-variables
 ##
@@ -315,7 +315,7 @@ nodeSelector: {}
 ## @param resourcesPreset Set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if resources is set (resources is recommended for production).
 ## More information: https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15
 ##
-resourcesPreset: "nano"
+resourcesPreset: "medium"
 ## @param resources Set container requests and limits for different resources like CPU or memory (essential for production workloads)
 ## Example:
 ## resources:
@@ -511,7 +511,7 @@ service:
 ingress:
   ## @param ingress.enabled Enable ingress controller resource
   ##
-  enabled: true
+  enabled: false
   ## DEPRECATED: Use ingress.annotations instead of ingress.certManager
   ## certManager: false
   ##
@@ -526,7 +526,7 @@ ingress:
   ## This is supported in Kubernetes 1.18+ and required if you have more than one IngressClass marked as the default for your cluster .
   ## ref: https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/
   ##
-  ingressClassName: "traefik"
+  ingressClassName: ""
   ## @param ingress.hostname Default host for the ingress resource
   ##
   hostname: drupal.${cluster}.symphorines.home
@@ -550,7 +550,7 @@ ingress:
   ## TLS certificates will be retrieved from a TLS secret with name: {{- printf "%s-tls" .Values.ingress.hostname }}
   ## You can use the ingress.secrets parameter to create this TLS secret or relay on cert-manager to create it
   ##
-  tls: true
+  tls: false
   ## @param ingress.tlsWwwPrefix Adds www subdomain to default cert
   ## Creates tls host with ingress.hostname: {{ print "www.%s" .Values.ingress.hostname }}
   ## Is enabled if "nginx.ingress.kubernetes.io/from-to-www-redirect" is "true"
@@ -627,14 +627,14 @@ mariadb:
   auth:
     ## ref: https://github.com/bitnami/containers/tree/main/bitnami/mariadb#setting-the-root-password-on-first-run
     ##
-    rootPassword: "drupal*12tutu45"
+    rootPassword: "drupal1234"
     ## ref: https://github.com/bitnami/containers/blob/main/bitnami/mariadb/README.md#creating-a-database-on-first-run
     ##
     database: bitnami_drupal
     ## ref: https://github.com/bitnami/containers/blob/main/bitnami/mariadb/README.md#creating-a-database-user-on-first-run
     ##
     username: bn_drupal
-    password: "drupal*12toto45"
+    password: "drupal1234"
   primary:
     ## Enable persistence using Persistent Volume Claims
     ## ref: https://kubernetes.io/docs/concepts/storage/persistent-volumes/
@@ -672,7 +672,7 @@ externalDatabase:
   host: ""
   port: 3306
   user: bn_drupal
-  password: "drupal"
+  password: ""
   database: bitnami_drupal
   existingSecret: ""
 ## @section Volume Permissions parameters
@@ -694,7 +694,7 @@ volumePermissions:
   image:
     registry: docker.io
     repository: bitnami/os-shell
-    tag: 12-debian-12-r27
+    tag: 12-debian-12-r29
     digest: ""
     pullPolicy: IfNotPresent
     ## Optionally specify an array of imagePullSecrets.
@@ -744,7 +744,7 @@ metrics:
   image:
     registry: docker.io
     repository: bitnami/apache-exporter
-    tag: 1.0.8-debian-12-r7
+    tag: 1.0.8-debian-12-r8
     digest: ""
     pullPolicy: IfNotPresent
     ## Optionally specify an array of imagePullSecrets.
@@ -911,7 +911,7 @@ certificates:
   image:
     registry: docker.io
     repository: bitnami/os-shell
-    tag: 12-debian-12-r27
+    tag: 12-debian-12-r29
     digest: ""
     ## Specify a imagePullPolicy
     ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
