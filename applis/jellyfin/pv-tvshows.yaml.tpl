@@ -10,7 +10,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: manual
   nfs:
-    path: /volume2/kubernetes/rpi/jellyfin-tvshows
+    path: /volume2/kubernetes/${cluster}/jellyfin-tvshows
     server: 192.168.1.11
   claimRef:
     namespace: ${namespace}

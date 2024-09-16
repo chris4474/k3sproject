@@ -4,9 +4,9 @@
 #
 . env.sh
 
-if  [ "$cluster" != "rpi" ]
+if  [ "$cluster" != "rpi" ] && [ "$cluster" != "apps" ]
 then
-  echo Sorry, for now I can only deploy on cluster \"rpi\"
+  echo Sorry, for now I can only deploy on clusters \"rpi\" and \"apps\"
   exit
 fi
 
@@ -16,7 +16,6 @@ then
   echo Bye
   exit
 fi
-
 #
 # directories with template/yaml files
 #

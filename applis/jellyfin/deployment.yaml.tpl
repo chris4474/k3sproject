@@ -27,7 +27,7 @@ spec:
               value: Etc/UTC
             - name: JELLYFIN_PublishedServerUrl
               value: ${JellyfinPublishedUrl}
-          image: lscr.io/linuxserver/jellyfin:latest
+          image: jellyfin/jellyfin
           name: jellyfin
           ports:
             - containerPort: 8096
