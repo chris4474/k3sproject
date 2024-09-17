@@ -4,12 +4,6 @@
 #
 . env.sh
 
-if  [ "$cluster" != "rpi" ] && [ "$cluster" != "apps" ]
-then
-  echo Sorry, for now I can only deploy on clusters \"rpi\" and \"apps\"
-  exit
-fi
-
 read -t 10 -p "Deploy K8S DASHBOARD in cluster ${cluster^^} namespace ${namespace^^}. Are you OK ? Y,N [N] " answer
 if [ "$answer" != "Y" ] && [ "$answer" != "y" ]
 then
@@ -42,7 +36,7 @@ kubectl apply -f ${file_tls_secret}
 #
 values_file=$(mktemp /tmp/values.XXXX)
 envsubst <values.tpl >${values_file}
-helm upgrade --install k8s-dashboard kubernetes-dashboard/kubernetes-dashboard \
+helm upgrade --install k8s-dashboard kubernetes-dashboard/kubernetes-dashboard --version 7.6.1 \
    --namespace ${namespace} \
    -f ${values_file}
 
