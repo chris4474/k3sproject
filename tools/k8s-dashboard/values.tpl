@@ -1,4 +1,6 @@
 app:
+  image:
+    pullPolicy: Always
   ingress:
     enabled: true
     hosts:

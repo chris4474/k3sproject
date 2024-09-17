@@ -9,4 +9,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: admin-user
-  namespace: k8s-dashboard
+  namespace: ${namespace}

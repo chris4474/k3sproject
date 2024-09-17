@@ -2,4 +2,4 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: admin-user
-  namespace: k8s-dashboard
+  namespace: ${namespace}

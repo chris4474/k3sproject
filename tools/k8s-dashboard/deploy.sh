@@ -1,25 +1,65 @@
 #!/bin/bash
-cluster=$(kubectl config current-context)
-read -t 5 -p "About to deploy k8s dashboard on cluster $cluster. Are you OK ? Y,N [N] " answer
+#
+# set environment specific variables
+#
+. env.sh
+
+if  [ "$cluster" != "rpi" ] && [ "$cluster" != "apps" ]
+then
+  echo Sorry, for now I can only deploy on clusters \"rpi\" and \"apps\"
+  exit
+fi
+
+read -t 10 -p "Deploy K8S DASHBOARD in cluster ${cluster^^} namespace ${namespace^^}. Are you OK ? Y,N [N] " answer
 if [ "$answer" != "Y" ] && [ "$answer" != "y" ]
 then
   echo Bye
   exit
 fi
+#
+# directories with template/yaml files
+#
+dirsrc=$(dirname $0)
+dirdest=$dirsrc/$cluster
 
-kubectl apply -f namespace.yaml
 
-kubectl create secret generic --namespace k8s-dashboard apps-certificate \
-    --from-file=tls.key=$HOME/certs/apps/apps.key \
-    --from-file=tls.crt=<(cat $HOME/certs/apps/apps.crt $HOME/certs/apps/intCA.crt)
+#
+# Generate initial manifests
+#
+file_namespace=$(mktemp /tmp/namespace.XXXX)
+file_tls_secret=$(mktemp /tmp/tls_secret.XXXX)
+envsubst <${dirsrc}/namespace.tpl >${file_namespace}
+envsubst <${dirsrc}/tls-secret.tpl >${file_tls_secret}
 
-cluster=$cluster envsubst <values.yaml.tpl >values.yaml
+#
+# Apply initial manifests
+#
+kubectl apply -f ${file_namespace}
+kubectl apply -f ${file_tls_secret}
+
+#
+# the workload is deployed with HELM
+#
+values_file=$(mktemp /tmp/values.XXXX)
+envsubst <values.tpl >${values_file}
 helm upgrade --install k8s-dashboard kubernetes-dashboard/kubernetes-dashboard \
-   --namespace k8s-dashboard \
-   -f values.yaml
+   --namespace ${namespace} \
+   -f ${values_file}
 
-kubectl apply -f user.yaml
-kubectl apply -f cr-binding.yaml
-kubectl apply -f servertransport.yaml
+#
+# Apply additional Manifests
+#
+[ ! -d $dirdest ] && mkdir $dirdest
+for file in ${dirsrc}/*.yaml.tpl
+do
+   if [ -f $file ]
+   then
+     outputfile=${dirdest}/$(basename $file ".tpl")
+     envsubst <$file  >${outputfile}
+     kubectl apply -n ${namespace} -f ${outputfile}
+   fi
+done
+#
+# generate token
+#
 kubectl -n k8s-dashboard create token admin-user
-
