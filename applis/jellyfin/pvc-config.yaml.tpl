@@ -4,7 +4,7 @@ metadata:
   name: jellyfin-config
   namespace: ${namespace}
 spec:
-  storageClassName: manual
+  storageClassName: ""
   accessModes:
     - ReadWriteOnce
   resources:

@@ -9,7 +9,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: manual
+  storageClassName: ""
   local:
     path: /jellyfin/config
   nodeAffinity:

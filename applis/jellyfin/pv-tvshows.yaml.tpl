@@ -8,7 +8,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: manual
+  storageClassName: ""
   nfs:
     path: /volume2/kubernetes/${cluster}/jellyfin-tvshows
     server: 192.168.1.11

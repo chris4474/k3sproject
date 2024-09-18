@@ -5,16 +5,12 @@ metadata:
   namespace: jellyfin
 spec:
   entryPoints:
-  - web
+  - websecure
+  tls:
+    secretName: apps-certificate
   routes:
   - kind: Rule
     match: Host(`jellyfin.${cluster}.symphorines.home`)
-    services:
-      - kind: Service
-        name: jellyfin
-        port: 8096
-  - kind: Rule
-    match: Host(`${external_hostname}`)
     services:
       - kind: Service
         name: jellyfin
