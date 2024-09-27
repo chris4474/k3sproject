@@ -29,9 +29,10 @@ ports:
     # sets consistent nodePort, required to set service.type=NodePort
     nodePort: 31883
     protocol: TCP
-#  websocket:
-#    port: 9090
-#    protocol: TCP
+  websocket:
+    port: 9090
+    protocol: TCP
+    nodePort: 30090
 
 persistence:
   enabled: true
@@ -107,14 +108,18 @@ config: |
   persistence_location /mosquitto/data/
   log_dest stdout
   listener 8883
+  require_certificate true
   certfile /mosquitto/data/cert/cert-plus-intca.pem
   keyfile /mosquitto/data/cert/apps.key
-  require_certificate true
   cafile /mosquitto/data/cert/ca.crt
   use_identity_as_username true
   allow_anonymous true
   listener 9090
   protocol websockets
+  require_certificate true
+  certfile /mosquitto/data/cert/cert-plus-intca.pem
+  keyfile /mosquitto/data/cert/apps.key
+  cafile /mosquitto/data/cert/ca.crt
 
 ## Additional volumes.
 extraVolumes: []
