@@ -2,7 +2,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: jellyfin
-  namespace: jellyfin
+  namespace: ${namespace}
 spec:
   entryPoints:
   - websecure
