@@ -43,7 +43,13 @@ kubectl apply -f ${file_tls_secret}
 #
 chart_values=$(mktemp /tmp/chart-values.XXXX)
 envsubst <${dirsrc}/chart-values.tpl >${chart_values}
-helm install ha -n ${namespace} helm-hass/home-assistant -f ${chart_values} --version 0.2.78
+if  (helm -n ${namespace} status ha >/dev/null 2>&1)
+then
+  command="upgrade"
+else
+  command="install"
+fi
+helm ${command} ha -n ${namespace} helm-hass/home-assistant -f ${chart_values} --version 0.2.78
 
 #
 # Apply additional Manifests
