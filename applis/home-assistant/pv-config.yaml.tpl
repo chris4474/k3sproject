@@ -11,7 +11,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: ""
   local:
-    path: /home-assistant/config
+    path: /persistent-volumes/home-assistant
   nodeAffinity:
     required:
       nodeSelectorTerms:

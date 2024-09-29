@@ -45,7 +45,7 @@ podSecurityContext:
 # Environment variables
 env:
   - name: TZ
-    value: Europe/Prague
+    value: Europe/Paris
 # - name: SOME_VAR_FROM_CONFIG_MAP
 #   valueFrom:
 #     configMapRef:
