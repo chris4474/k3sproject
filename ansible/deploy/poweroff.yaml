@@ -1,0 +1,86 @@
+---
+#
+# Shutdown all nodes
+#
+
+
+#
+# switch login
+#
+- hosts: master:worker
+  gather_facts: no
+  vars_files:
+  - secrets.yaml
+
+  tasks:
+
+#
+# Get an Admin Token to query the switch
+#
+  - name: login netgear switch
+    delegate_to: localhost
+    run_once: True
+    command: ntgrrc login --address={{ netgear_switch }} --password {{ netgear_admin_password }}
+    register: result
+    changed_when: False
+    failed_when: False
+
+  - fail:
+    when: result.rc != 0 and
+          'login request returned 200 OK' not in result.stdout
+
+#
+# Wait for complete shutdown of device (wait until the corresponding switch port becomes "AVAILABLE")
+#
+  - name: query netgear switch
+    delegate_to: localhost
+    command:  ntgrrc port settings --address={{ netgear_switch }} --output-format json
+    changed_when: False
+    register: result
+
+#
+# To make sure I did not change the ports assigned to the devices I verify port name and port number
+#
+  - name: Port in the switch must have the same name as the host in the inventory
+    delegate_to: localhost
+    vars:
+      json_data:  "{{ result.stdout | from_json  }}"
+      port_name:  "{{ json_data.port_settings[switch_port - 1]['Port Name'] }}"
+    fail:
+    when: port_name != inventory_hostname
+
+#
+# Before powering down the port I want to make sure the device is fully shutdown
+#
+  - name: Wait for Port to become available 
+    delegate_to: localhost
+    changed_when: False
+    vars:
+      json_data: "{{ result.stdout | from_json  }}"
+      query: 'port_settings[{{ switch_port - 1 }}]."Port Status"'
+      port_status: "{{ json_data | json_query(query) }}"
+    command: ntgrrc port settings --address={{ netgear_switch }} --output-format json
+    register: result
+    until:  port_status == "AVAILABLE"
+    delay: 10
+    retries: 20
+
+#
+# Stop providing power to switch port
+#
+  - name: Get POE Power Status
+    delegate_to: localhost
+    changed_when: False
+    command: ntgrrc poe status --address={{ netgear_switch }} --output-format json
+    register: result
+
+  - name: Power Off port 
+    delegate_to: localhost
+    vars:
+      json_data: "{{ result.stdout | from_json  }}"
+      port_name: "{{ json_data.poe_status[switch_port - 1]['Port Name'] }}"
+      power_status: "{{ json_data.poe_status[switch_port - 1]['Status'] }}"
+    command: ntgrrc poe set --power disable --port={{ switch_port }} --address={{ netgear_switch }}
+    when: power_status != "Disabled"
+    register: res
+

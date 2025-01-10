@@ -1,7 +1,10 @@
 [master]
-pi4b-mas01 ansible_host=192.168.1.110
+pi4b-mas01 ansible_host=192.168.1.110 switch_port=2
 
 [worker]
-pi4b-wrk01 ansible_host=192.168.1.111
-pi4b-wrk02 ansible_host=192.168.1.112
-pi4b-wrk03 ansible_host=192.168.1.113
+pi4b-wrk01 ansible_host=192.168.1.111 switch_port=3
+pi4b-wrk02 ansible_host=192.168.1.112 switch_port=4
+pi4b-wrk03 ansible_host=192.168.1.113 switch_port=5
+
+[all:vars]
+netgear_switch=192.168.1.253
