@@ -34,6 +34,7 @@
 #
   - name: query netgear switch
     delegate_to: localhost
+    run_once: true
     command:  ntgrrc port settings --address={{ netgear_switch }} --output-format json
     changed_when: False
     register: result

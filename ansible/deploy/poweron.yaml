@@ -30,6 +30,7 @@
 #
   - name: query netgear switch
     delegate_to: localhost
+    run_once: True
     command:  ntgrrc port settings --address={{ netgear_switch }} --output-format json
     changed_when: False
     register: result
@@ -50,6 +51,7 @@
 #
   - name: Get POE Power Status
     delegate_to: localhost
+    run_once: True
     changed_when: False
     command: ntgrrc poe status --address={{ netgear_switch }} --output-format json
     register: result
