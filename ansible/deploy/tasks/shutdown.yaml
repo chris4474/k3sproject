@@ -4,4 +4,3 @@
 - name: Shutdown Node
   become: true
   community.general.shutdown:
-
