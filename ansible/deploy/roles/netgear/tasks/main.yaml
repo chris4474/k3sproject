@@ -1,0 +1,18 @@
+---
+#
+# netgear specific actions including
+#   login
+#   poweron port
+#   poweroff port
+#
+
+- include_tasks: prereqs.yaml
+
+- include_tasks: login.yaml
+
+- include_tasks: poweroff.yaml
+  when: poweroff is defined
+
+- include_tasks: poweron.yaml
+  when: poweron is defined
+

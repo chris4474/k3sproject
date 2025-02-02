@@ -1,0 +1,54 @@
+---
+#
+# Enable Power on a given netgear switch and a given switchport
+#
+#   Args:
+#      netgear_switch: < IP address of the switch >
+#      switch_port: port number in the switch (starting from 1)
+#      
+#   Prereqs:
+#      ntggrc was successfully installed
+#      must have sucessfully logged on with the switch
+#
+
+#
+# Retrieve Port settings/Status
+#
+  - name: query netgear switch
+    delegate_to: localhost
+    run_once: True
+    command:  ntgrrc port settings --address={{ netgear_switch }} --output-format json
+    changed_when: False
+    register: result
+
+#
+# Make sure I do not power on the wrong device(s)
+#
+  - name: Port in the switch must have the same name as the host in the inventory
+    delegate_to: localhost
+    vars:
+      json_data:  "{{ result.stdout | from_json  }}"
+      port_name:  "{{ json_data.port_settings[switch_port - 1]['Port Name'] }}"
+    fail:
+    when: port_name != inventory_hostname
+
+#
+# Enable Power on the specified port if needed
+#
+  - name: Get POE Power Status
+    delegate_to: localhost
+    run_once: True
+    changed_when: False
+    command: ntgrrc poe status --address={{ netgear_switch }} --output-format json
+    register: result
+
+  - name: Power On port 
+    delegate_to: localhost
+    vars:
+      json_data: "{{ result.stdout | from_json  }}"
+      port_name: "{{ json_data.poe_status[switch_port - 1]['Port Name'] }}"
+      power_status: "{{ json_data.poe_status[switch_port - 1]['Status'] }}"
+    command: ntgrrc poe set --power enable --port={{ switch_port }} --address={{ netgear_switch }}
+    when: power_status == "Disabled"
+    register: res
+

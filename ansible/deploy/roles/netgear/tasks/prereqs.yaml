@@ -1,0 +1,24 @@
+---
+#
+# Make sure all the tools needed are available
+#
+
+- name: Test presence of ntgrrrc 
+  delegate_to: localhost
+  run_once: true
+  ansible.builtin.stat:
+    path: /usr/local/bin/ntgrrc
+  register: res
+
+- name: Download ntgrrc
+  become: true
+  delegate_to: localhost
+  run_once: true
+  ansible.builtin.get_url:
+    url: "{{ ntgrrc_location }}"
+    dest: /usr/local/bin/ntgrrc
+    checksum: "sha256:{{ ntgrrc_sha256 }}"
+    mode: '755'
+  when: not res.stat.exists
+
+    

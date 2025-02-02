@@ -9,5 +9,16 @@
 
   tasks:
   - include_tasks: tasks/shutdown.yaml
-  - include_tasks: tasks/poweroff.yaml
+
+#
+# Poweroff nodes
+#
+- hosts: master:worker
+  gather_facts: no
+  vars_files:
+  - secrets.yaml
+  roles:
+  - role: netgear
+    vars:
+      poweroff: True
     when: netgear_switch is defined
