@@ -41,7 +41,7 @@ envsubst <${dirsrc}/chart-values.tpl >${chart_values}
 #
 # Deploy Drupal with helm
 #
-helm install drupal bitnami/drupal --version 20.0.2 --namespace=${namespace} -f ${chart_values}
+helm install drupal bitnami/drupal --version 21.1.2 --namespace=${namespace} -f ${chart_values}
 [ -f ${chart_values} ] && rm ${chart_values}
 
 #
