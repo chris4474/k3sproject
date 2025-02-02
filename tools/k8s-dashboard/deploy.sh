@@ -36,7 +36,7 @@ kubectl apply -f ${file_tls_secret}
 #
 values_file=$(mktemp /tmp/values.XXXX)
 envsubst <values.tpl >${values_file}
-helm upgrade --install k8s-dashboard kubernetes-dashboard/kubernetes-dashboard --version 7.10.1 \
+helm upgrade --install k8s-dashboard kubernetes-dashboard/kubernetes-dashboard --version 7.10.3 \
    --namespace ${namespace} \
    -f ${values_file}
 
