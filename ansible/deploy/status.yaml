@@ -1,6 +1,6 @@
 ---
 #
-# Poweron nodes
+# Get POE Port status
 #
 - hosts: master:worker
   gather_facts: no
@@ -9,5 +9,5 @@
   roles:
   - role: netgear
     vars:
-      poweron: True
+      getstatus: True
     when: netgear_switch is defined

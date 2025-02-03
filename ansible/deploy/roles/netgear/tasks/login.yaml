@@ -14,9 +14,9 @@
     when: result.rc != 0 and
           'login request returned 200 OK' not in result.stdout
 
-  - name: Debug
-    delegate_to: localhost
-    run_once: True
-    debug:
-      msg: "Login succeeded"
+#  - name: Debug
+#    delegate_to: localhost
+#    run_once: True
+#    debug:
+#      msg: "Login succeeded"
 

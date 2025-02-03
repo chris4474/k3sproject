@@ -1,0 +1,58 @@
+---
+#
+# Get status of port in netgear switch
+#
+
+#
+# Collect port status data from the switch
+#
+- name: query netgear switch
+  delegate_to: localhost
+  run_once: true
+  command:  ntgrrc port settings --address={{ netgear_switch }} --output-format json
+  changed_when: False
+  register: result
+
+#
+# make sure port name matches inventory hostname
+#
+- name: Port in the switch must have the same name as the host in the inventory
+  delegate_to: localhost
+  vars:
+    json_data:  "{{ result.stdout | from_json  }}"
+    port_name:  "{{ json_data.port_settings[switch_port - 1]['Port Name'] }}"
+  fail:
+  when: port_name != inventory_hostname
+
+#
+# Get port Status
+#
+- name: Get port status
+  delegate_to: localhost
+  changed_when: False
+  vars:
+    json_data: "{{ result.stdout | from_json  }}"
+    query: 'port_settings[{{ switch_port - 1 }}]."Port Status"'
+    p_status: "{{ json_data | json_query(query) }}"
+  set_fact: 
+    port_status: "{{ p_status }}"
+
+#
+# Get POE status
+#
+- name: Get POE Power Status
+  delegate_to: localhost
+  run_once: true
+  changed_when: False
+  command: ntgrrc poe status --address={{ netgear_switch }} --output-format json
+  register: result
+
+- name: Display Port status
+  delegate_to: localhost
+  vars:
+    json_data: "{{ result.stdout | from_json  }}"
+    p_name: "{{ json_data.poe_status[switch_port - 1]['Port Name'] }}"
+    power_status: "{{ json_data.poe_status[switch_port - 1]['Status'] }}"
+  debug:
+    msg: "Port {{ switch_port }} ({{ inventory_hostname }}) is {{ port_status }} Power Status: {{ power_status }}"
+

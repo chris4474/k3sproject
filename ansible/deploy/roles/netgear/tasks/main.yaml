@@ -16,3 +16,5 @@
 - include_tasks: poweron.yaml
   when: poweron is defined
 
+- include_tasks: getstatus.yaml
+  when: getstatus is defined
