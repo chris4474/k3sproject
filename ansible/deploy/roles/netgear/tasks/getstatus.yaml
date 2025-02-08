@@ -34,6 +34,6 @@
     port_id:     "{{ port_data.port_settings[ hostvars[item].switch_port  - 1 ]['Port ID']}}"
     poe_status:  "{{ poe_data.poe_status[  hostvars[item].switch_port  - 1 ]['Status'] }}"
   debug:
-    msg: "Port {{ port_id }} ( {{ port_name }}) is {{ port_status }} Power Status: {{ poe_status }} "
+    msg: "Port {{ port_id }} ( {{ port_name }}) is {{ port_status }} Power Status: {{ poe_status }}"
   with_items: 
   - "{{ ansible_play_hosts }}"
