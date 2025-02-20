@@ -10,6 +10,6 @@ pi4b-wrk03 ansible_host=192.168.1.93 eth_ip=192.168.1.113/24
 ansible_user=chris
 eth_subnet=192.168.1.0/24
 eth_gateway=192.168.1.254
-eth_nameservers="192.168.1.11"
+eth_nameservers="192.168.1.251,i 192.168.1.11, 1.1.1.1"
 eth_connection_name="Wired connection 1"
 ssh_public_key="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOzj7q1asEas4B14SZxmjrNdGm4V7v40NhTKCid5WWbR christophe@symphorines.home"
