@@ -1,8 +1,22 @@
 ---
 - name: Scale Cluster
   hosts: worker
-  gather_facts: no
+  gather_facts: yes
   tasks:
+
+  - name: Update all hosts (Alpine)
+    become: true
+    ansible.builtin.apk:
+      update_cache: true
+      upgrade: yes
+    when: ansible_os_family == "Alpine"
+
+  - name: Update all hosts (Debian)
+    become: true
+    ansible.builtin.apt:
+      update_cache: true
+      upgrade: full
+    when: ansible_os_family == "Debian"
 
   - name: Read the cluster Token
     become: true
