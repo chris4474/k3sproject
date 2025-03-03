@@ -4,19 +4,44 @@
   gather_facts: yes
   tasks:
 
+  - name: Determine version released in 'stable' channel
+    shell: |
+      version_url=https://update.k3s.io/v1-release/channels/stable
+      VERSION_K3S=$(curl -w '%{url_effective}' -L -s -S ${version_url} -o /dev/null | sed -e 's|.*/||')
+      echo ${VERSION_K3S}
+    changed_when: false
+    register: res_stable_version
+
+  - name: Determine current version of k3s
+    shell: |
+      k3s --version | grep k3s | awk '{print $3}'
+    changed_when: false
+    failed_when: false
+    register: res_current_version
+
+  - set_fact:
+      update_needed: "{{ current_version != stable_version }}"
+    vars:
+      stable_version: "{{ res_stable_version.stdout_lines[0] | default('stable_undefined') }}"
+      current_version: "{{ res_current_version.stdout_lines[0] | default('current_undefined') }}"
+
   - name: Update all hosts (Alpine)
     become: true
     ansible.builtin.apk:
       update_cache: true
       upgrade: yes
-    when: ansible_os_family == "Alpine"
+    when:
+    - ansible_os_family == "Alpine"
+    - update_needed
 
   - name: Update all hosts (Debian)
     become: true
     ansible.builtin.apt:
       update_cache: true
       upgrade: full
-    when: ansible_os_family == "Debian"
+    when:
+    - ansible_os_family == "Debian"
+    - update_needed
 
   - name: Read the cluster Token
     become: true
@@ -24,6 +49,8 @@
     shell: |
       cat /var/lib/rancher/k3s/server/node-token
     register: token
+    when:
+    - update_needed
 
   - name: join worker node
     become: true
@@ -34,3 +61,5 @@
     vars:
       k3s_token: "{{ token.stdout_lines[0] }}"
       k3s_url: "https://{{ groups.master[0] }}:6443"
+    when:
+    - update_needed
