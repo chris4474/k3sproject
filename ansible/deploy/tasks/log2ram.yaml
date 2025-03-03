@@ -5,6 +5,7 @@
 
 - debug:
     msg: "Booting from SD Card {{ root_dev[0] }}: will install log2ram"
+  when: root_dev[0] is match("/dev/mmcblk*")
 
 - name: Install azlux.fr gpg key
   become: true
