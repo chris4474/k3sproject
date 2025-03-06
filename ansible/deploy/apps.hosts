@@ -8,3 +8,4 @@ pi4b-wrk03 ansible_host=192.168.1.113 switch_port=5
 
 [all:vars]
 netgear_switch=192.168.1.253
+log2ram=yes

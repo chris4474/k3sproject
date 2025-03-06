@@ -12,7 +12,7 @@
   ansible.builtin.get_url:
     url: https://azlux.fr/repo.gpg
     dest: /usr/share/keyrings/azlux-archive-keyring.gpg
-  when: root_dev[0] is match("/dev/mmcblk*")
+  when: root_dev[0] is match("/dev/mmcblk*") or ( log2ram | default(false) )
 
 - name: Install the azlux repository
   become: true
@@ -20,7 +20,7 @@
     repo: "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ {{ ansible_distribution_release }} main"
     filename: azlux
     state: present
-  when: root_dev[0] is match("/dev/mmcblk*")
+  when: root_dev[0] is match("/dev/mmcblk*")  or ( log2ram | default(false) )
 
 - name: install log2ram
   become: true
@@ -28,4 +28,4 @@
     name: log2ram
     update_cache: yes
     state: present
-  when: root_dev[0] is match("/dev/mmcblk*")
+  when: root_dev[0] is match("/dev/mmcblk*")  or ( log2ram | default(false) )
