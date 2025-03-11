@@ -41,7 +41,7 @@ envsubst <${dirsrc}/chart-values.tpl >${file_values}
 #
 # Deploy with helm
 #
-helm install wordpress bitnami/wordpress --version 23.1.10 --namespace=${namespace} --create-namespace -f ${file_values}
+helm install wordpress bitnami/wordpress --version 24.1.14 --namespace=${namespace} --create-namespace -f ${file_values}
 
 #
 # Apply additional Manifests

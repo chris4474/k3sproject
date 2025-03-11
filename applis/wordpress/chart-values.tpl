@@ -10,7 +10,6 @@
 ## @param global.imageRegistry Global Docker image registry
 ## @param global.imagePullSecrets Global Docker registry secret names as an array
 ## @param global.defaultStorageClass Global default StorageClass for Persistent Volume(s)
-## @param global.storageClass DEPRECATED: use global.defaultStorageClass instead
 ##
 global:
   imageRegistry: ""
@@ -20,7 +19,11 @@ global:
   ##
   imagePullSecrets: []
   defaultStorageClass: ""
-  storageClass: ""
+  ## Security parameters
+  ##
+  security:
+    ## @param global.security.allowInsecureImages Allows skipping image verification
+    allowInsecureImages: false
   ## Compatibility adaptations for Kubernetes platforms
   ##
   compatibility:
@@ -84,10 +87,9 @@ diagnosticMode:
 image:
   registry: docker.io
   repository: bitnami/wordpress
-  tag: 6.6.1-debian-12-r15
+  tag: 6.7.2-debian-12-r5
   digest: ""
   ## Specify a imagePullPolicy
-  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: https://kubernetes.io/docs/concepts/containers/images/#pre-pulled-images
   ##
   pullPolicy: IfNotPresent
@@ -113,7 +115,7 @@ wordpressUsername: chris
 ## @param wordpressPassword WordPress user password
 ## Defaults to a random 10-character alphanumeric string if not set
 ##
-wordpressPassword: "${userPassword}"
+wordpressPassword: ""
 ## @param existingSecret Name of existing secret containing WordPress credentials
 ## NOTE: Must contain key `wordpress-password`
 ## NOTE: When it's set, the `wordpressPassword` parameter is ignored
@@ -894,7 +896,7 @@ volumePermissions:
   image:
     registry: docker.io
     repository: bitnami/os-shell
-    tag: 12-debian-12-r28
+    tag: 12-debian-12-r39
     digest: ""
     pullPolicy: IfNotPresent
     ## Optionally specify an array of imagePullSecrets.
@@ -997,7 +999,7 @@ metrics:
   image:
     registry: docker.io
     repository: bitnami/apache-exporter
-    tag: 1.0.8-debian-12-r8
+    tag: 1.0.9-debian-12-r16
     digest: ""
     pullPolicy: IfNotPresent
     ## Optionally specify an array of imagePullSecrets.
