@@ -4,7 +4,7 @@
 #
 . env.sh
 
-read -t 10 -p "Deploy NFS provisionner in cluster ${cluster^^} namespace ${namespace^^}. Are you OK ? Y,N [N] " answer
+read -t 10 -p "Deploy NFS CSI driver in cluster ${cluster^^} namespace kube-system }. Are you OK ? Y,N [N] " answer
 if [ "$answer" != "Y" ] && [ "$answer" != "y" ]
 then
   echo Bye
@@ -16,7 +16,6 @@ fi
 #
 dirsrc=$(dirname $0)
 dirdest=$dirsrc/${cluster}
-
 
 #
 # Generate initial manifests
@@ -30,11 +29,10 @@ envsubst <${dirsrc}/namespace.tpl >${file_namespace}
 kubectl apply -f ${file_namespace}
 
 #
-# Deploy the provisionner with HELM
+# Deploy the NFS CSI driver with HELM
 #
-chart_values=$(mktemp /tmp/chart_values.XXXX)
-envsubst <${dirsrc}/chart_values.tpl >${chart_values}
-helm install nfs-syno -n ${namespace} nfs-subdir-external-provisioner/nfs-subdir-external-provisioner -f ${chart_values}
+helm repo add csi-driver-nfs  https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts
+helm install csi-driver-nfs -n kube-system csi-driver-nfs/csi-driver-nfs
 
 #
 # Apply additional Manifests
