@@ -25,7 +25,7 @@ spec:
       containers:
       - name: hello-app-v9a
         imagePullPolicy: IfNotPresent
-        image: registry.symphorines.home/chris7444/hello-app:short-v9
+        image: registry.symphorines.home/chris7444/hello-app:short-v9.2
         env:
         - name: HELLO_APP_VERSION
           value: "hello-app 9A"
@@ -53,7 +53,7 @@ spec:
       containers:
       - name: hello-app-v9b
         imagePullPolicy: IfNotPresent
-        image: registry.symphorines.home/chris7444/hello-app:short-v9
+        image: registry.symphorines.home/chris7444/hello-app:short-v9.2
         env:
         - name: HELLO_APP_VERSION
           value: "hello-app 9B"
