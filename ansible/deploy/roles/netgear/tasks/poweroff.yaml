@@ -46,6 +46,7 @@
 - name: Get POE Power Status
   delegate_to: localhost
   changed_when: False
+  run_once: true
   command: ntgrrc poe status --address={{ netgear_switch }} --output-format json
   register: result
 
