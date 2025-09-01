@@ -48,15 +48,31 @@
   changed_when: False
   run_once: true
   command: ntgrrc poe status --address={{ netgear_switch }} --output-format json
-  register: result
+  register: poe_status_all
 
-- name: Power Off port 
+- name: foo
   delegate_to: localhost
-  vars:
-    json_data: "{{ result.stdout | from_json  }}"
-    port_name: "{{ json_data.poe_status[switch_port - 1]['Port Name'] }}"
-    power_status: "{{ json_data.poe_status[switch_port - 1]['Status'] }}"
-  command: ntgrrc poe set --power disable --port={{ switch_port }} --address={{ netgear_switch }}
-  when: power_status != "Disabled"
-  register: res
+  run_once: true
+  set_fact:
+    mylist: []
 
+- name: Build list of ports with power enabled
+  delegate_to: localhost
+  run_once: true
+  vars:
+    poe_data: "{{ poe_status_all.stdout | from_json  }}"
+    poe_status:  "{{ poe_data.poe_status[  hostvars[item].switch_port  - 1 ]['Status'] }}"
+  set_fact:
+    mylist: "{{ mylist  | union ( poe_data.poe_status[ hostvars[item].switch_port  - 1 ]['Port ID'])  }}"
+  when:
+  - poe_status != "Disabled"
+  with_items:
+  - "{{ ansible_play_hosts }}"
+
+- name: Power off ports
+  delegate_to: localhost
+  run_once: true
+  vars:
+    port_list: "{{ mylist | join(',') }}"
+  command: ntgrrc poe set --power disable --port={{ port_list }} --address={{ netgear_switch }}
+                                                                                                     
