@@ -3,6 +3,7 @@
   tasks:
   - name: Pies temperature
     become: true
+    changed_when: False
     shell: |
       /usr/bin/vcgencmd measure_temp
     register: temp
