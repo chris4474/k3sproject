@@ -9,7 +9,7 @@ fi
 
 dirsrc=$(dirname $0)
 dirdest=$dirsrc/$cluster
-secretname=apps-tls-secret
+secretname=traefik-tls-secret
 
 echo generating manifests in folder $dirdest
 [ ! -d $dirdest ] && mkdir $dirdest
@@ -21,6 +21,6 @@ do
 done
 
 kubectl create secret generic -n kube-system ${secretname} \
-    --from-file=tls.key=$HOME/certs/apps/apps.key \
-    --from-file=tls.crt=<(cat $HOME/certs/apps/apps.crt $HOME/certs/apps/intCA.crt)
+    --from-file=tls.key=$HOME/certs/traefik.apps/traefik-key.pem \
+    --from-file=tls.crt=<(cat $HOME/certs/traefik.apps/traefik.crt $HOME/certs/traefik.apps/intca.pem)
 
