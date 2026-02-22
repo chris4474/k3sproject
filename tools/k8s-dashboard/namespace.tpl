@@ -1,5 +1,5 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: k8s-dashboard
+  name: ${namespace}
 
