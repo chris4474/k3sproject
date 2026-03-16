@@ -247,7 +247,7 @@ spec:
         - env:
             - name: PORT
               value: "9555"
-          image: registry.symphorines.home/microservice/adservice:v1.0-RASPI@sha256:4cf5d220273269b915ecdfbc7468a49887c69ad7e420aff43806955406d2ff6e
+          image: registry.symphorines.home/microservice/adservice:v1.0-RASPI
           livenessProbe:
             grpc:
               port: 9555
@@ -302,7 +302,7 @@ spec:
         - env:
             - name: REDIS_ADDR
               value: redis-cart:6379
-          image: registry.symphorines.home/microservice/cartservice:v1.0-RASPI@sha256:46c384bb0f97bfa5d73a934bc07ebef4377b2866ab7f84766e639ade59362ccf
+          image: registry.symphorines.home/microservice/cartservice:v1.0-RASPI
           livenessProbe:
             grpc:
               port: 7070
@@ -368,7 +368,7 @@ spec:
               value: currencyservice:7000
             - name: CART_SERVICE_ADDR
               value: cartservice:7070
-          image: registry.symphorines.home/microservice/checkoutservice:v1.0-RASPI@sha256:c9fcb1cb02ec55744cb8d8747dd91dd5748653c73cd6592a7c2ddc337819c6ac
+          image: registry.symphorines.home/microservice/checkoutservice:v1.0-RASPI
           livenessProbe:
             grpc:
               port: 5050
@@ -420,7 +420,7 @@ spec:
               value: "7000"
             - name: DISABLE_PROFILER
               value: "1"
-          image: registry.symphorines.home/microservice/currencyservice:v1.0-RASPI@sha256:7500ce4b1415d575f3b2303921d248102d71d1e88395e48dd1c56509babaa2bb
+          image: registry.symphorines.home/microservice/currencyservice:v1.0-RASPI
           livenessProbe:
             grpc:
               port: 7000
@@ -474,7 +474,7 @@ spec:
               value: "8080"
             - name: DISABLE_PROFILER
               value: "1"
-          image: registry.symphorines.home/microservice/emailservice:v1.0-RASPI@sha256:7ea150d4be89357e7b48a255ab7c74973665c103f3c73b1af9fbc9f48fc6c660
+          image: registry.symphorines.home/microservice/emailservice:v1.0-RASPI
           livenessProbe:
             grpc:
               port: 8080
@@ -548,7 +548,7 @@ spec:
               value: shoppingassistantservice:80
             - name: ENABLE_PROFILER
               value: "0"
-          image: registry.symphorines.home/microservice/frontend:v1.0-RASPI@sha256:edf18825c7603ebe70d945bb8813b5be51b403ded8be564337ee797a94124ac4
+          image: registry.symphorines.home/microservice/frontend:v1.0-RASPI
           livenessProbe:
             httpGet:
               httpHeaders:
@@ -610,7 +610,7 @@ spec:
               value: "50051"
             - name: DISABLE_PROFILER
               value: "1"
-          image: registry.symphorines.home/microservice/paymentservice:v1.0-RASPI@sha256:8037b148c2f97674c20d770a6f57a572e686fe684e14a6e753ca51e68d800d8a
+          image: registry.symphorines.home/microservice/paymentservice:v1.0-RASPI
           livenessProbe:
             grpc:
               port: 50051
@@ -663,7 +663,7 @@ spec:
               value: "3550"
             - name: DISABLE_PROFILER
               value: "1"
-          image: registry.symphorines.home/microservice/productcatalogservice:v1.0-RASPI@sha256:909bef867da20863d2deb019b5353b78f3bb9ee9cec87805305ee48cccdf1d65
+          image: registry.symphorines.home/microservice/productcatalogservice:v1.0-RASPI
           livenessProbe:
             grpc:
               port: 3550
@@ -718,7 +718,7 @@ spec:
               value: productcatalogservice:3550
             - name: DISABLE_PROFILER
               value: "1"
-          image: registry.symphorines.home/microservice/recommendationservice:v1.0-RASPI@sha256:756d5a84df52d677db09e7e98f9ee6755eec85f80a2a303408b8d6a556e961d8
+          image: registry.symphorines.home/microservice/recommendationservice:v1.0-RASPI
           livenessProbe:
             grpc:
               port: 8080
@@ -828,7 +828,7 @@ spec:
               value: "50051"
             - name: DISABLE_PROFILER
               value: "1"
-          image: registry.symphorines.home/microservice/shippingservice:v1.0-RASPI@sha256:321f1c13b6046f9a3eedd53157ee04d9fe871ad66a39ebb95b1b9a4a1e826ca3
+          image: registry.symphorines.home/microservice/shippingservice:v1.0-RASPI
           livenessProbe:
             grpc:
               port: 50051
@@ -886,7 +886,7 @@ spec:
               value: "10"
             - name: RATE
               value: "1"
-          image: registry.symphorines.home/microservice/loadgenerator:v1.0-RASPI@sha256:d72a5ccf6bfc0e6769b315cea734c466d4f610369d477317007ea1ec940a88c3
+          image: registry.symphorines.home/microservice/loadgenerator:v1.0-RASPI
           name: main
           resources:
             limits:
