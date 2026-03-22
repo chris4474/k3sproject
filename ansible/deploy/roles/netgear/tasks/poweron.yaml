@@ -1,54 +1,68 @@
 ---
 #
-# Enable Power on a given netgear switch and a given switchport
-#
-#   Args:
-#      netgear_switch: < IP address of the switch >
-#      switch_port: port number in the switch (starting from 1)
-#      
-#   Prereqs:
-#      ntggrc was successfully installed
-#      must have sucessfully logged on with the switch
+# Poweron ports used by targettted nodes
 #
 
 #
-# Retrieve Port settings/Status
+# Collect port status data from the switch
 #
-  - name: query netgear switch
-    delegate_to: localhost
-    run_once: True
-    command:  ntgrrc port settings --address={{ netgear_switch }} --output-format json
-    changed_when: False
-    register: result
+- name: query netgear switch
+  delegate_to: localhost
+  run_once: true
+  command:  ntgrrc port settings --address={{ netgear_switch }} --output-format json
+  changed_when: False
+  register: result
 
 #
-# Make sure I do not power on the wrong device(s)
+# make sure port name matches inventory hostname
 #
-  - name: Port in the switch must have the same name as the host in the inventory
-    delegate_to: localhost
-    vars:
-      json_data:  "{{ result.stdout | from_json  }}"
-      port_name:  "{{ json_data.port_settings[switch_port - 1]['Port Name'] }}"
-    fail:
-    when: port_name != inventory_hostname
+- name: Port in the switch must have the same name as the host in the inventory
+  delegate_to: localhost
+  vars:
+    json_data:  "{{ result.stdout | from_json  }}"
+    port_name:  "{{ json_data.port_settings[switch_port - 1]['Port Name'] }}"
+  fail:
+  when: port_name != inventory_hostname
 
 #
-# Enable Power on the specified port if needed
+# 
 #
-  - name: Get POE Power Status
-    delegate_to: localhost
-    run_once: True
-    changed_when: False
-    command: ntgrrc poe status --address={{ netgear_switch }} --output-format json
-    register: result
+- name: Get POE Power Status
+  delegate_to: localhost
+  changed_when: False
+  run_once: true
+  command: ntgrrc poe status --address={{ netgear_switch }} --output-format json
+  register: poe_status_all
 
-  - name: Power On port 
-    delegate_to: localhost
-    vars:
-      json_data: "{{ result.stdout | from_json  }}"
-      port_name: "{{ json_data.poe_status[switch_port - 1]['Port Name'] }}"
-      power_status: "{{ json_data.poe_status[switch_port - 1]['Status'] }}"
-    command: ntgrrc poe set --power enable --port={{ switch_port }} --address={{ netgear_switch }}
-    when: power_status == "Disabled"
-    register: res
+- name: Initialize port list
+  delegate_to: localhost
+  run_once: true
+  set_fact:
+    mylist: []
 
+- name: Build list of ports with power disabled
+  delegate_to: localhost
+  run_once: true
+  vars:
+    poe_data: "{{ poe_status_all.stdout | from_json  }}"
+    poe_status:  "{{ poe_data.poe_status[  hostvars[item].switch_port  - 1 ]['Status'] }}"
+  set_fact:
+    mylist: "{{ mylist  | union ( poe_data.poe_status[ hostvars[item].switch_port  - 1 ]['Port ID'])  }}"
+  when:
+  - poe_status != "Enabled"
+  with_items:
+  - "{{ ansible_play_hosts }}"
+
+- name: Dislapy list of ports
+  delegate_to: localhost
+  run_once: true
+  vars:
+    port_list: "{{ mylist | join(',') }}"
+  debug: var=port_list
+                                                                                                     
+- name: Power on ports
+  delegate_to: localhost
+  run_once: true
+  vars:
+    port_list: "{{ mylist | join(',') }}"
+  command: ntgrrc poe set --power enable --port={{ port_list }} --address={{ netgear_switch }}
