@@ -1,2 +1,4 @@
 [registry."registry.symphorines.home"]
   ca=["/home/chris/certs/ca.crt"]
+[registry."zot.symphorines.home"]
+  ca=["/home/chris/certs/ca.crt"]
