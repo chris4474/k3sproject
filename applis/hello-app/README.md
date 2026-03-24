@@ -49,9 +49,9 @@ ENV PORT=8080
 CMD ["/src/hello-app"]
 ```
 
-The builder is running on the host as specifued by `--platform=$BUILDPLATFORM` but the compiler compiles for the targetted Operating system and architecture ( `${TARGETOS}` and `${TARGETARCH}`)
+The builder is running on the host as specified by `--platform=$BUILDPLATFORM` but the compiler compiles for the targetted Operating system and architecture ( `${TARGETOS}` and `${TARGETARCH}`)
 
-The overall operation is mushc faster as shown below:
+The overall operation is much faster as shown below:
 
 real    0m34.518s
 user    0m0.184s
