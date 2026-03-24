@@ -17,10 +17,6 @@ The Dockerfile is the same for all architectures but the use of QEMU comes with 
 
 time to build: 3m27s
 
-real    3m27.736s
-user    0m0.642s
-sys     0m0.527s
-
 ## Using the GO Cross Compiler
 
 Typically a cross compiler is needed (here the GO compiler). In the example below, the GO compiler on the host is used to produce executables for a target platform which is not the one used by the host.
@@ -53,7 +49,4 @@ The builder is running on the host as specified by `--platform=$BUILDPLATFORM` b
 
 The overall operation is much faster as shown below:
 
-real    0m34.518s
-user    0m0.184s
-sys     0m0.117s
-
+time to build: 0m34s
