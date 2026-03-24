@@ -1,26 +1,59 @@
-# Hello Application example
+## Using the QEMU based Builder
 
-This example shows how to build and deploy a containerized Go web server
-application using [Kubernetes](https://kubernetes.io).
+The Dockerfile is the same for all architectures but a QEMU VM with the target architecture is launched for every architecture requested by the docker buildx build command line which does not match the architecture of the host. The host is the machine processing the docker buildx build command: 
 
-Visit https://cloud.google.com/kubernetes-engine/docs/tutorials/hello-app
-to follow the tutorial and deploy this application on [Google Kubernetes
-Engine](https://cloud.google.com/kubernetes-engine).
 
-This directory contains:
 
-- `main.go` contains the HTTP server implementation. It responds to all HTTP
-  requests with a  `Hello, world!` response.
-- `Dockerfile` is used to build the Docker image for the application.
+`FROM golang:alpine3.20 AS builder
+ADD . /go/src/hello-app
+RUN GO111MODULE=auto go install hello-app`
 
-This application is available as two Docker images, which respond to requests
-with different version numbers:
+`FROM alpine:3.22
+COPY --from=builder /go/bin/hello-app .
+ENV PORT=8080
+CMD ["./hello-app"]`
 
-- `gcr.io/google-samples/hello-app:1.0`
-- `gcr.io/google-samples/hello-app:2.0`
+The Dockerfile is the same for all architectures but the use of QEMU comes with a cost.
 
-This example is used in many official/unofficial tutorials, some of them
-include:
-- [Kubernetes Engine Quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart)
-- [Kubernetes Engine - Deploying a containerized web application](https://cloud.google.com/kubernetes-engine/docs/tutorials/hello-app) tutorial
-- [Kubernetes Engine - Setting up HTTP Load Balancing](https://cloud.google.com/kubernetes-engine/docs/tutorials/http-balancer) tutorial
+time to build: 3m27s
+
+real    3m27.736s
+user    0m0.642s
+sys     0m0.527s
+
+## Using the GO Cross Compiler
+
+Typically a cross compiler is needed (here the GO compiler). In the example below, the GO compiler on the host is used to produce executables for a target platform which is not the one used by the host.
+
+```
+FROM  --platform=$BUILDPLATFORM golang:alpine3.20 AS builder
+WORKDIR /src
+
+# Copy dependency files first for better caching
+COPY go.mod  ./
+RUN go mod download
+
+# copy app source files
+COPY . .
+
+# Set environment variables for the target architecture
+ARG TARGETOS
+ARG TARGETARCH
+ADD . /src/hello-app
+RUN GOOS=${TARGETOS} GOARCH=${TARGETARCH} CGO_ENABLED=0 go build -ldflags="-s -w" -o /src/hello-app .
+
+FROM alpine:3.22
+WORKDIR /src
+COPY --from=builder /src/hello-app .
+ENV PORT=8080
+CMD ["/src/hello-app"]
+```
+
+The builder is running on the host as specifued by `--platform=$BUILDPLATFORM` but the compiler compiles for the targetted Operating system and architecture ( `${TARGETOS}` and `${TARGETARCH}`)
+
+The overall operation is mushc faster as shown below:
+
+real    0m34.518s
+user    0m0.184s
+sys     0m0.117s
+

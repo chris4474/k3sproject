@@ -1,0 +1,22 @@
+FROM --platform=$BUILDPLATFORM golang:alpine3.20 AS builder
+WORKDIR /src
+
+# Copy dependency files first for better caching
+COPY go.mod  ./
+RUN go mod download
+
+# copy app source files
+COPY . .
+
+# Set environment variables for the target architecture
+ARG TARGETOS
+ARG TARGETARCH
+
+ADD . /src/hello-app
+RUN GOOS=${TARGETOS} GOARCH=${TARGETARCH} CGO_ENABLED=0 go build -ldflags="-s -w" -o /src/hello-app .
+
+FROM alpine:3.22
+WORKDIR /src
+COPY --from=builder /src/hello-app .
+ENV PORT=8080
+CMD ["/src/hello-app"]
