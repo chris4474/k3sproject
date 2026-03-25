@@ -16,6 +16,7 @@ ADD . /src/hello-app
 RUN GOOS=${TARGETOS} GOARCH=${TARGETARCH} CGO_ENABLED=0 go build -ldflags="-s -w" -o /src/hello-app .
 
 FROM alpine:3.22
+LABEL description="This image generated with a cross compiler"
 WORKDIR /src
 COPY --from=builder /src/hello-app .
 ENV PORT=8080
