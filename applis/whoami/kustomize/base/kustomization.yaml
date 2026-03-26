@@ -1,0 +1,11 @@
+secretGenerator:
+- name: apps-certificate
+  files:
+  - secrets/tls.crt
+  - secrets/tls.key
+  type: "kubernetes.io/tls"
+
+resources:
+- route.yaml
+- workload.yaml
+- middlewares.yaml

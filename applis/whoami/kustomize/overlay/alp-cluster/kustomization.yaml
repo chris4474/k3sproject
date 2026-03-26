@@ -1,0 +1,11 @@
+resources:
+- ../../base
+
+patches:
+- target:
+    kind: IngressRoute
+    name: whoami
+  patch: |-
+    - op: replace
+      path: /spec/routes/0/match
+      value:  Host(`whoami.alp.symphorines.home`)
