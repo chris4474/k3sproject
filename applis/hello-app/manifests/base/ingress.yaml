@@ -3,10 +3,13 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: hello-app
-  namespace: hello-app
 spec:
+  tls:
+  - hosts:
+    - hello-app.example.com
+    secretName: apps-tls-secret
   rules:
-  - host: hello-app.apps.symphorines.home
+  - host: hello-app.example.com
     http:
       paths:
       - backend:
@@ -16,4 +19,3 @@ spec:
               number: 80
         path: /
         pathType: ImplementationSpecific
-

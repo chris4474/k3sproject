@@ -1,0 +1,14 @@
+labels:
+- pairs:
+    description: "Hello"
+
+secretGenerator:
+- name: apps-tls-secret
+  files:
+  - secrets/tls.crt
+  - secrets/tls.key
+  type: "kubernetes.io/tls"
+
+resources:
+- ingress.yaml
+- workload.yaml

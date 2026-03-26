@@ -1,0 +1,13 @@
+resources:
+- ../../base
+patches:
+- target:
+    kind: Ingress
+    name: hello-app
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: hello-app.rpi.symphorines.home
+    - op: replace
+      path: /spec/tls/0/hosts/0
+      value: hello-app.rpi.symphorines.home
