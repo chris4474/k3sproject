@@ -2,11 +2,10 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ${namespace}
-  namespace: ${namespace}
+  name: boutique
 spec:
   rules:
-  - host: ${namespace}.${cluster}.symphorines.home
+  - host: boutique.example.com
     http:
       paths:
       - backend:
@@ -18,6 +17,6 @@ spec:
         pathType: ImplementationSpecific
   tls:
   - hosts:
-    - ${namespace}.${cluster}.symphorines.home
+    - boutique.example.com
     secretName: apps-certificate
 

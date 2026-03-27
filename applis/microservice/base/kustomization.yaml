@@ -1,0 +1,13 @@
+secretGenerator:
+- name: apps-certificate
+  files:
+  - secrets/tls.crt
+  - secrets/tls.key
+  type: "kubernetes.io/tls"
+
+namespace: boutique
+
+resources:
+- namespace.yaml
+- ingress.yaml
+- microservice.yaml
