@@ -9,6 +9,9 @@ secretGenerator:
   - secrets/tls.key
   type: "kubernetes.io/tls"
 
+namespace: hello-app
+
 resources:
+- namespace.yaml
 - ingress.yaml
 - workload.yaml
