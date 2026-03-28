@@ -16,13 +16,13 @@ These are the services I host in my environment which are used by this kubernete
 
 **minio**.  Also running on my NAS. This is an S3 compatible cloud storage solution. I don't use it for any other purpose as storage backend for Harbor
 
-**zot**.  Zot is an OCI registry. I plan to use zot as my default registry in the future as Harbor is keeping my NAS busy all the times and I don't really need the bells and wistles coming with Harbor (although I like them a lot).
+**zot**.  Zot is an OCI registry. I plan to use zot as my default registry in the future because Harbor is keeping my NAS busy all the times. I don't really need the bells and wistles coming with Harbor (although I like them a lot). Replacing Harbor by zot may extend the life of my hard drives.
 
 
 
 ## Topics
 
-- **ansible**. I deploy and update Kubernetes on my Raspberry PIs using ansible. The main playbooks are `k3signite.yaml` which I use to deploy a master node and `scale.yaml` which I use to deploy additional worker nodes. These playbooks are also use to update the OS and the version of K3s on the master and worker nodes. The initial playbooks (those used to prepare the OS before installing k3s) are adapted from Jeff Geerling's work. 
+- **ansible**. I deploy and update Kubernetes on my Raspberry PIs using ansible. The main playbooks are `k3signite.yaml` which I use to deploy a master node and `scale.yaml` which I use to deploy additional worker nodes. These playbooks are also used to update the OS and the version of K3s on the master and worker nodes. The initial playbooks (those used to prepare the OS before installing k3s) are adapted from Jeff Geerling's work. 
   
   
 
