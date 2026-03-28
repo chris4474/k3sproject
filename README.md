@@ -26,7 +26,7 @@ These are the services I host in my environment which are used by this kubernete
   
   
 
-- **POE switch**. Overtime I changed my older 5-ports switch connecting the 4 PIs by an 8-port POE switch. I Updated the `shutdown.yaml` playbook to disable the power on the relevant ports when shuting down my PIs. I also created a poweron.yaml playbook to ... power on the PIs. The utility I use to operate the POE switch can be found here: https://github.com/nitram509/ntgrrc
+- **POE switch**. Overtime I changed my older 5-ports switch connecting the 4 PIs by an 8-port POE switch. I Updated the `shutdown.yaml` playbook to disable the power on the relevant ports when shuting down my PIs. I also created a `poweron.yaml` playbook to ... power on the PIs. The utility I use to operate the POE switch can be found here: https://github.com/nitram509/ntgrrc
   
   
 
