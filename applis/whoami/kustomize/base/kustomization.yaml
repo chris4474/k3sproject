@@ -5,7 +5,10 @@ secretGenerator:
   - secrets/tls.key
   type: "kubernetes.io/tls"
 
+namespace: whoami
+
 resources:
+- namespace.yaml
 - route.yaml
 - workload.yaml
 - middlewares.yaml
