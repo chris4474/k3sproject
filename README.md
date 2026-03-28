@@ -1,114 +1,67 @@
 # K3S@home
 
-## Building container images for ARM
+## Introduction
 
-### Problem Statement
+The purpose of this project is to store all the experiments I make on my homelab. The initial configuration of my homelab was a kubernetes (k3s) cluster of Raspberry PIs. At this time the availabiliy of images for the linux/ARM64 platform (understand Raspberry PI running a Linux 64 bit OS) was limited and I very quickly had to learn how to produce such images for this platform from a Linux/AMD64 platform (my PC). In 2023, the technology for generating multiplatform images was emergent and evolving and putting it into action for my own purpose was the focus of this project. Now the technology is mature and well documented and my focus has moved to other topics. 
 
-I use a k3s cluster made of Raspberry PIs to learn Kubernetes.  Some of the tutorials which can be found on the Internet were made to run on GKE and use container images which are not available for the ARM architecture. 
+This repo contains artifacts generated or used while investigating the topics described in the next section.
 
-However, because everything is open source, the sources for these container images can be found on github (most of the time) and using these sources. one can rebuild the images. As a first approximation, one would connect to a docker daemon running on an ARM machine and then run the `docker build` command to build an image that matches the architecture of the Docker node. In other words, if you run the `docker build` command on an AMD64 machine, you will build an image for the AMD64 architecture.
+## Infrastructure
 
-In order to build a Docker image for the ARM architecture, I could have installed Docker on one of my PIs and build from here. However,  PIs are slow (even if they are now more powerful than they were in the past), and the storage available on a PI is generally backed by an SD card which was not designed for this type of workload (heavy/frequent writes). In addition, my PIs are running k3s and they are using `cri-io` as the container engine and not the Docker daemon.
+These are the services I host in my environment which are used by this kubernetes homelab.
 
-What I wanted is something that has been long available in the software engineering industry, something like a cross compiler. What a cross compiler is doing is that it will let you compile a program source (for example a C program) for the target architecture of your choice. 
+**vault**. I use vault to generate TLS certificates. Although I have my own domain, I am not using Let's encrypt certificates for my homelab.
 
-And something like this exists and this is Docker buildx.
+**Harbor**. I am using Harbor as my self hosted image registry. I use a docker-compose file to deply harbor. The storage backend used by Harbor is an S3 compatible solution (minio) also running on my NAS.
 
-### Building cross platform container images using Docker buildx
+**minio**.  Also running on my NAS. This is an S3 compatible cloud storage solution. I don't use it for any other purpose as storage backend for Harbor
 
-The article https://community.arm.com/developer/tools-software/tools/b/tools-software-ides-blog/posts/getting-started-with-docker-for-arm-on-linux will provide you with the instructions you need to install/enable docker buildx on an AMD64 machine running Linux. I used these instructions to enable buildx on a Virtual Machine running Ubuntu 18.04.
-
-However, after following the instructions given in the article above, I found out that the `docker buildx build` command was not longer working. This is because two containers are required which are not restarted automatically after a reboot
-
-So I came up with these instructions. You only need to run them once after you have installed docker and enabled the buildx extension as explained in the paper above.
-
-```
-docker run --restart=unless-stopped --privileged docker/binfmt:a7996909642ee92942dcd6cff44b9b95f08dad64
-sudo cat /proc/sys/fs/binfmt_misc/qemu-aarch64
-docker buildx create --name mybuilder --buildkitd-flags restart=unless-stopped
-docker buildx use mybuilder
-docker buildx inspect --bootstrap
-```
-
-If you reboot, the two containers which are required to build multi architecture container images will be automatically restarted and this is due to the `restart=unless-stopped` flag passed to the `docker run` and the `docker  buildx create` commands.
-
-### Build your container image 
-
-Now provided that you have everything working, you will be able to build the hello-app container image using the following commands:
-
-```
-echo cd ./hello-app
-docker login
-docker buildx build --platform linux/arm,linux/arm64,linux/amd64 -t <yourusername>/hello-app:<tag> . --push
-```
-
-You first need to login with the Docker hub registry with `docker login`.  The `docker buildx build` command ends with the switch `--push` which means you want to upload the resulting image to Docker hub.  If you don't specify `--push`, the images will be generated and stay in a cache.  You can also use `--load` instead of `--push` if you want the resulting Docker image to be loaded into your local Docker environment (you may want to test your new image first before uploading it to Docker Hub).
-
-In the example above, we have requested to generate the container image for three different platforms, `linux/arm, linux/arm64 and linux/amd64`. However you could have specified additional platforms. The `docker buildx inspect` command list all possible target platforms that the current(?) builder supports:
-
-```
-chris@ubuntu-101:~/k3sproject$ docker buildx inspect
-Name:   mybuilder
-Driver: docker-container
-
-Nodes:
-Name:      mybuilder0
-Endpoint:  unix:///var/run/docker.sock
-Status:    running
-Flags:     restart=unless-stopped
-Platforms: linux/amd64, linux/arm64, linux/riscv64, linux/ppc64le, linux/s390x, linux/386, linux/arm/v7, linux/arm/v6
-chris@ubuntu-101:~/k3sproject$
-```
-
-You can also verify that your repository contains an image for the three types of platforms/architectures you requested during the build with the `--platform` switch .
-
-```
-chris@ubuntu-101:~/k3sproject$ docker buildx imagetools inspect chris7444/hello-app:v3.0
-Name:      docker.io/chris7444/hello-app:v3.0
-MediaType: application/vnd.docker.distribution.manifest.list.v2+json
-Digest:    sha256:80c35459041ff458742a16d63d5db3b26c21c22e2c6330428586a84bc1307c9a
-
-Manifests:
-  Name:      docker.io/chris7444/hello-app:v3.0@sha256:a60130e169876a95ea3e80e3a3f217ad32e4d37fb19648efd6043caa777b67bf
-  MediaType: application/vnd.docker.distribution.manifest.v2+json
-  Platform:  linux/arm/v7
-
-  Name:      docker.io/chris7444/hello-app:v3.0@sha256:0999e6676363cee6c13568d9532d5c968b4efcb885ad5991ab97244bf15ddd6f
-  MediaType: application/vnd.docker.distribution.manifest.v2+json
-  Platform:  linux/arm64
-
-  Name:      docker.io/chris7444/hello-app:v3.0@sha256:f0ea1df8db1ebb322f23d70f4fe8ef9f1dd9d1eacd65d942b4b80d2e565eaeb9
-  MediaType: application/vnd.docker.distribution.manifest.v2+json
-  Platform:  linux/amd64
-
-```
+**zot**.  Zot is an OCI registry. I plan to use zot as my default registry in the future as Harbor is keeping my NAS busy all the times and I don't really need the bells and wistles coming with Harbor (although I like them a lot).
 
 
 
-### Closer look at the Dockerfile
+## Topics
 
-1- the Docker file is "compiled" using all the platforms specified in the `docker buildx build` command line
+- **ansible**. I deploy and update Kubernetes on my Raspberry PIs using ansible. The main playbooks are `k3signite.yaml` which I use to deploy a master node and `scale.yaml` which I use to deploy additional worker nodes. These playbooks are also use to update the OS and the version of K3s on the master and worker nodes. The initial playbooks (those used to prepare the OS before installing k3s) are adapted from Jeff Geerling's work. 
+  
+  
 
-2- the first FROM statement means we need to compile and generate the hello-app application in the context of the builder.
+- **POE switch**. Overtime I changed my older 5-ports switch connecting the 4 PIs by an 8-port POE switch. I Updated the `shutdown.yaml` playbook to disable the power on the relevant ports when shuting down my PIs. I also created a poweron.yaml playbook to ... power on the PIs. The utility I use to operate the POE switch can be found here: https://github.com/nitram509/ntgrrc
+  
+  
 
-3- our hello-app image is made of an Alpine image in which we insert the generated hello-app executable
+- **Multiplatform builds** Probably the first thing to learn when willing to run applications on a Kubernetes cluster is how to generate a container image.  When the target platform is Linux/ARM64 and you development machine is Linux/AMD64 you have to learn how to generate multiplatform container images. The `applis/curl` and `applis/utilities` folder are two artifacts created during my experiments with this technology ([docker buildx | Docker Docs](https://docs.docker.com/reference/cli/docker/buildx/)). The experience with buildx in these two folders is limited to QEMU based multiplatform builds.  I experimented cross compilation later while troubleshooting the deployment of  the Google microservice demo. The `applis/hello-app` folder contains two Dockerfile files. One which generates the hello-app container image using QEMU, another one which generates the hello-app container image using the GO language cross compilation capabilities.
+  
+  
 
-```
-FROM golang:alpine3.12 AS builder
-ADD . /go/src/hello-app
-RUN go install hello-app
+- **Ingress and Traefik**  I had to struggle a little bit with Traefik which is the solution that the k3s distro deploys by default. Ingresses are used to access you appplications  from outside the kubernetes cluster. I am not a big fan of Traefik especially because I don't like the way the documentation is written. (Traefik can be deployed on various platforms, Kubernetes or not and they try to make the documentation generic which I find confusing). At this point I prefer to use regular ingress resources (Kind: Ingress) rather than Traefik resources (ingressRoutes etc).
+  
+  
 
-FROM alpine:latest
-COPY --from=builder /go/bin/hello-app .
-ENV PORT 8080
-CMD ["./hello-app"]
-```
+- **helm**.  Helm is used to deploy a few applications such as drupal, wordpress, mosquitto etc (I don't use most of these apps but I can easily experiement with them thanks to Kubernetes and Helm). I like helm and don;t plan to experiment with Red Hat's favorite`operators`.  I plan to investigate ArgoCD in the future. 
+  
+  
 
-note: There need to be an image for the platforms specified in the `docker buildx build` command line for both `golang:alpine3.12` and `alpine:latest` for the build to succeed. 
+- **Kubernetes Dashboard**: I started with the now obsolete Kubernetes Dashboard [Kubernetes Dashboard](https://github.com/kubernetes-retired/dashboard) and I am now using Headlamp [Headlamp](https://github.com/kubernetes-sigs/headlamp). ("using"" is a big word, let's say I am looking at what they are doing)
+  
+  
 
-if this is not the case, the build will fail. For example if you specifiy `linux/riscv64` as a target platform, the build will fail because the `golang:alpine3.12` repo does not contain an image for this architecture
+- **Google Microservice Demo**.  The Google microservice demo can be found [here](https://github.com/GoogleCloudPlatform/microservices-demo). Generating all the required images for my Linux/ARM64 based cluster is  [another project of mine](https://github.com/chris4474/microservices-demo). Simply running `skaffold build` did not work for me hence the fork. This other project of mine generates a microservice.yaml file (using `skaffold render`) which can be found under the `applis/microservice` folder. The demo is deployed on my target clusters using `kustomize`. ([Declarative Management of Kubernetes Objects Using Kustomize | Kubernetes](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/))
+  
+  
+
+- **Kustomize**.  I have 3 Kubernetes clusters in my environment. A first cluster consisting of 4 Raspberry PI 4Bs, a second cluster of 3 Alpine VMs running on my PC and a third cluster of one Raspberry PI 5.  Some of the yaml files such as those specifying hostnames (eg TLS specifications in an Ingress definition) have to reflect the target cluster. For example I can deploy wordpress on cluster 1 and cluster 2 but will need to use different hostnames to differentiate the two instances (eg wordpress.cluster1.example.com and wordpress.cluster2.example.com). In the beginning I had to "templatize" the yaml files and processes them using bash variable substitution to produce the kubernetes manifests which I could then deploy on the target cluster. I now use Kustomize to do the same. Replacing my older `deploy.sh` scripts using the Kustomize approach is a work in progress
+
+
+
+## Planned topics
+
+- **ArgoCD**.  Actually I have been investigating Kustomize because this is one of the the techno I plan to use with ArgoCD, in addition to Helm.
+
+- **Istio**. 
+
+
+
+
 
 ![image-20200616172201436](screenshots/golang_alpine3.12)
-
-
-
