@@ -38,7 +38,7 @@ These are the services I host in my environment which are used by this kubernete
   
   
 
-- **helm**.  Helm is used to deploy a few applications such as drupal, wordpress, mosquitto etc (I don't use most of these apps but I can easily experiement with them thanks to Kubernetes and Helm). I like helm and don;t plan to experiment with Red Hat's favorite`operators`.  I plan to investigate ArgoCD in the future. 
+- **helm**.  Helm is used to deploy a few applications such as drupal, wordpress, mosquitto etc (I don't use most of these apps but I can easily experiment with them thanks Kubernetes and Helm). I like helm and don;t plan to experiment with Red Hat's favorite`operators`.  I plan to investigate ArgoCD in the future. 
   
   
 
