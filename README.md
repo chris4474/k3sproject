@@ -60,8 +60,4 @@ These are the services I host in my environment which are used by this kubernete
 
 - **Istio**. 
 
-
-
-
-
-![image-20200616172201436](screenshots/golang_alpine3.12)
+TBCon'd
