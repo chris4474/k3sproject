@@ -13,39 +13,3 @@ patches:
       path: /spec/tls/0/hosts/0
       value: boutique.apps.symphorines.home
 
-images:
-
-  - name: registry.symphorines.home/microservice/adservice
-    newName:   zot.symphorines.home/microservice/adservice
-
-  - name: registry.symphorines.home/microservice/cartservice
-    newName:   zot.symphorines.home/microservice/cartservice
-
-  - name: registry.symphorines.home/microservice/checkoutservice
-    newName:   zot.symphorines.home/microservice/checkoutservice
-
-  - name: registry.symphorines.home/microservice/currencyservice
-    newName:   zot.symphorines.home/microservice/currencyservice
-
-  - name: registry.symphorines.home/microservice/emailservice
-    newName:   zot.symphorines.home/microservice/emailservice
-
-  - name: registry.symphorines.home/microservice/frontend
-    newName:   zot.symphorines.home/microservice/frontend
-
-  - name: registry.symphorines.home/microservice/paymentservice
-    newName:   zot.symphorines.home/microservice/paymentservice
-
-  - name: registry.symphorines.home/microservice/productcatalogservice
-    newName:   zot.symphorines.home/microservice/productcatalogservice
-
-  - name: registry.symphorines.home/microservice/recommendationservice
-    newName:   zot.symphorines.home/microservice/recommendationservice
-
-  - name: registry.symphorines.home/microservice/shippingservice
-    newName:   zot.symphorines.home/microservice/shippingservice
-
-  - name: registry.symphorines.home/microservice/loadgenerator
-    newName:   zot.symphorines.home/microservice/loadgenerator
-
-

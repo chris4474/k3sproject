@@ -11,3 +11,53 @@ resources:
 - namespace.yaml
 - ingress.yaml
 - microservice.yaml
+
+patches:
+  - target:
+      kind: Deployment
+    patch: |-
+      - op: add
+        path: /spec/template/spec/imagePullSecrets
+        value: [{ "name": "gitea-registry-secret" }]
+
+secretGenerator:
+  - name: gitea-registry-secret
+    type: generic
+    files:
+      - secrets/config.json
+
+images:
+
+  - name: registry.symphorines.home/microservice/adservice
+    newName:   gitea.symphorines.home/chris/adservice
+
+  - name: registry.symphorines.home/microservice/cartservice
+    newName:   gitea.symphorines.home/chris/cartservice
+
+  - name: registry.symphorines.home/microservice/checkoutservice
+    newName:   gitea.symphorines.home/chris/checkoutservice
+
+  - name: registry.symphorines.home/microservice/currencyservice
+    newName:   gitea.symphorines.home/chris/currencyservice
+
+  - name: registry.symphorines.home/microservice/emailservice
+    newName:   gitea.symphorines.home/chris/emailservice
+
+  - name: registry.symphorines.home/microservice/frontend
+    newName:   gitea.symphorines.home/chris/frontend
+
+  - name: registry.symphorines.home/microservice/paymentservice
+    newName:   gitea.symphorines.home/chris/paymentservice
+
+  - name: registry.symphorines.home/microservice/productcatalogservice
+    newName:   gitea.symphorines.home/chris/productcatalogservice
+
+  - name: registry.symphorines.home/microservice/recommendationservice
+    newName:   gitea.symphorines.home/chris/recommendationservice
+
+  - name: registry.symphorines.home/microservice/shippingservice
+    newName:   gitea.symphorines.home/chris/shippingservice
+
+  - name: registry.symphorines.home/microservice/loadgenerator
+    newName:   gitea.symphorines.home/chris/loadgenerator
+
