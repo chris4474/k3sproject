@@ -13,6 +13,3 @@ patches:
       path: /spec/tls/0/hosts/0
       value: hello-app.alp.symphorines.home
 
-images:
-  - name: registry.example.com/chris7444/hello-app
-    newName: zot.symphorines.home/chris7444/hello-app

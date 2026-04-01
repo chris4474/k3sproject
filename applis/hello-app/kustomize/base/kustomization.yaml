@@ -15,3 +15,7 @@ resources:
 - namespace.yaml
 #- ingress.yaml
 - workload.yaml
+
+images:
+  - name: registry.example.com/chris7444/hello-app
+    newName: gitea.symphorines.home/chris7444/hello-app
