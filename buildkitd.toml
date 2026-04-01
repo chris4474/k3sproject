@@ -2,3 +2,5 @@
   ca=["/home/chris/certs/ca.crt"]
 [registry."zot.symphorines.home"]
   ca=["/home/chris/certs/ca.crt"]
+[registry."gitea.symphorines.home"]
+  ca=["/home/chris/certs/ca.crt"]
