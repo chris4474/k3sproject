@@ -2,16 +2,16 @@ labels:
 - pairs:
     description: "Hello"
 
-secretGenerator:
-- name: apps-tls-secret
-  files:
-  - secrets/tls.crt
-  - secrets/tls.key
-  type: "kubernetes.io/tls"
+#secretGenerator:
+#- name: apps-tls-secret
+#  files:
+#  - secrets/tls.crt
+#  - secrets/tls.key
+#  type: "kubernetes.io/tls"
 
 namespace: hello-app
 
 resources:
 - namespace.yaml
-- ingress.yaml
+#- ingress.yaml
 - workload.yaml
