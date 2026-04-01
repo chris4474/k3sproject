@@ -1,21 +1,16 @@
-labels:
-- pairs:
-    description: "Hello"
-
-#secretGenerator:
-#- name: apps-tls-secret
-#  files:
-#  - secrets/tls.crt
-#  - secrets/tls.key
-#  type: "kubernetes.io/tls"
+#labels:
+#- pairs:
+#    description: "Hello"
 
 namespace: hello-app
 
 resources:
-- namespace.yaml
-- ingress.yaml
-- workload.yaml
-- tls-sealed-secret.yaml
+  - namespace.yaml
+  - ingress.yaml
+  - workload.yaml
+  - tls-external-secret.yaml
+
 images:
   - name: registry.example.com/chris7444/hello-app
     newName: gitea.symphorines.home/chris/hello-app
+
