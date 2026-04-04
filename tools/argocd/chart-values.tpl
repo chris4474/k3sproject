@@ -1,0 +1,95 @@
+global:
+  domain: argocd.${cluster}.symphorines.home
+
+configs:
+  params:
+    server.insecure: true 
+  tls:
+    # -- TLS certificates for Git repositories
+    certificates:
+      gitea.symphorines.home: |
+        -----BEGIN CERTIFICATE-----
+        MIIFfjCCBGagAwIBAgIUGR4tifAg5VdLm90DPPCA3XOSk48wDQYJKoZIhvcNAQEN
+        BQAwfzELMAkGA1UEBhMCRlIxGDAWBgNVBAoMD0NocmlzdG9waGUgTGVoeTEqMCgG
+        A1UECwwhQ2hyaXN0b3BoZSBMZWh5J3MgSW50ZXJtZWRpYXRlIENBMSowKAYDVQQD
+        DCFDaHJpc3RvcGhlIExlaHkncyBJbnRlcm1lZGlhdGUgQ0EwHhcNMjUwODMwMTQ0
+        NjU0WhcNMjYwODMwMTQ0NzE4WjAiMSAwHgYDVQQDDBcqLmFwcHMuc3ltcGhvcmlu
+        ZXMuaG9tZTCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAJ6vLFsFcNzN
+        nB4hhC6zbfPpOSz0HvVoMNRI9jaoQzPHGFpxpvO/x/zjauBqfM/FEgl22NFs8Be0
+        DdpIScAJIjLlzQS44Y6sDgli/ipf4dk6a/CmbxyxoWxOXRK5a57ZPRGEXbIFPOhG
+        83krw+zMmFT8QcApNzy+NWJZ+BxUJ7TYB7eYfSIlB4oGlJfz5n+FiveDZPAKXMsJ
+        sRZN2GZ/OTawRkBY8CNEf/OXHIKLlikO1yMxAtJW0fEPqtrXXzQGAwEOy/h1otDu
+        5uRy+rH+xfNIjUuFoeCXjXv5N25yb0OWKRUz9Qtv94Pnh+wx5t2IjeTdLJEPb/Ky
+        X3r2TOeLmAuUl21n8we8P557jP8ByiQCjMo73/JIuvMLTj51l5yj18fjAK0TD/l/
+        absD6kn8JDPyUuPASvyzkKVATxXLx5VHrQ/pGf9sve1bKm27Xs0Tf4NtYQvk1V5D
+        QA8KxdepGDCDLkCWp1YpeMyaJq579wp6iS7Ul/ay7ikBR6YwJOpuHNBZnd6ROK4j
+        OAssD+BJE3Al21gWV6tRqC8Y1fpXM7tKtObc4VRWlSr+mFnLJDyUH6z7es92RvbW
+        fWtLPtUlQ68NAlCbUvfOay3u+ww4KlC5uUet3jkZxqj6eQsbVkn5EVxLQr4q1MRy
+        Tq/meZVgRd7j2iS4KNlaaJEiVb6d1gAhAgMBAAGjggFNMIIBSTAOBgNVHQ8BAf8E
+        BAMCA6gwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB0GA1UdDgQWBBTQ
+        1l6teWKiFnsJT+xYw8Bwr1w/4zAfBgNVHSMEGDAWgBT3qQgc5W1+9Z5FOn68Rb4O
+        UWFPsDBGBggrBgEFBQcBAQQ6MDgwNgYIKwYBBQUHMAKGKmh0dHBzOi8vdmF1bHQu
+        c3ltcGhvcmluZXMuaG9tZS92MS9pbnRjYS9jYTBSBgNVHREESzBJghYqLmFscC5z
+        eW1waG9yaW5lcy5ob21lghcqLmFwcHMuc3ltcGhvcmluZXMuaG9tZYIWKi5ycGku
+        c3ltcGhvcmluZXMuaG9tZTA8BgNVHR8ENTAzMDGgL6AthitodHRwczovL3ZhdWx0
+        LnN5bXBob3JpbmVzLmhvbWUvdjEvaW50Y2EvY3JsMA0GCSqGSIb3DQEBDQUAA4IB
+        AQBo9JYjCD9hWaioNcPxm/Tu6TzNvCe9uTKmDH25JT4sY/vkqeCfOTvFkv1a2uNS
+        sQOBdIERr0krjtnvDAj48yVe9lJCHEujeJnk6l2UCmubbYfM7464hz27eko4LPwv
+        BJoy6yug2z9vBQmxm/bXKPnj3pJN4Of59l+Ioe4rUQLBAS9B9Ypg6KIWKPq4wJSi
+        MJw5OU294HBwq/CQGEb6YEp+i6UPrPVFrwZ9TX0TXpQszX22MMh0Z+3lD70C+ka1
+        BEmo1zUElXyZk5CqgGdR+q5B2c9UOXzE+kv2w4jvuha7EJNcjtleLTwu+EI9v358
+        wofzn8S0MI3+0v8SRmxQo0m4
+        -----END CERTIFICATE-----
+        -----BEGIN CERTIFICATE-----
+        MIIENjCCAx6gAwIBAgIBAjANBgkqhkiG9w0BAQsFADBXMQswCQYDVQQGEwJGUjEY
+        MBYGA1UECgwPQ2hyaXN0b3BoZSBMZWh5MRAwDgYDVQQLDAdSb290IENBMRwwGgYD
+        VQQDDBNTeW1waG9yaW5lcyBSb290IENBMB4XDTIyMDExOTE1MDIxNVoXDTMyMDEx
+        OTE1MDIxNVowfzELMAkGA1UEBhMCRlIxGDAWBgNVBAoMD0NocmlzdG9waGUgTGVo
+        eTEqMCgGA1UECwwhQ2hyaXN0b3BoZSBMZWh5J3MgSW50ZXJtZWRpYXRlIENBMSow
+        KAYDVQQDDCFDaHJpc3RvcGhlIExlaHkncyBJbnRlcm1lZGlhdGUgQ0EwggEiMA0G
+        CSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC6/YNwwxIB66VZ04XJdlhxjExwKeEI
+        3ojFrOcVjl6ZGapxQJkmPHm/gzH47B7Zu/QYtSOd0qNJRVXQZ7NVMfNRRzVWhIis
+        oUAIVKwN+/Ok9D8dH5XtUe5Uba0qhpo9FEFndGg+5iWbBen5zhv9UzWFTtWevriL
+        D0CfoehQBXAcxbBXXfTYpW5L0neK4S+FIYS+bt6FVC9m+xHNgIl+R415XGeHvBtr
+        GCYakNo7Gb8elD4F/99cJSOUKirI4N503J0jrFazF58gUMDRrxEcFiygL62rGN0i
+        Bx6dSz4oSNrsO9Mtgvlbki6Rzo3i9mX6ejun8CTFiCbCJzV00AI1BzC7AgMBAAGj
+        geQwgeEwDgYDVR0PAQH/BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0O
+        BBYEFPepCBzlbX71nkU6frxFvg5RYU+wMB8GA1UdIwQYMBaAFBedm+ggFtJiABRu
+        1O/QdKT8yQQYMEIGCCsGAQUFBwEBBDYwNDAyBggrBgEFBQcwAoYmaHR0cDovL3N5
+        bXBob3JpbmVzLmhvbWUvY2Evcm9vdC1jYS5jZXIwNwYDVR0fBDAwLjAsoCqgKIYm
+        aHR0cDovL3N5bXBob3JpbmVzLmhvbWUvY2Evcm9vdC1jYS5jcmwwDQYJKoZIhvcN
+        AQELBQADggEBACFkkmhvpVmZf3vvJpaxSigmxWeoEQQlBLvibNIM6Raeoqa1cxj1
+        rL8CQ7UdmBmf3DbJhy6JiIJsjpgmG9G766ogu0kNjqoEbzJYutZom8jUhjSQlwj6
+        ZBFLb939uoL8Cjx7kxx8w53xIf81lTUMxyBTN/9yQFSRYY55V1W593hukdRzJM86
+        3XnWRebBQdySi1YnyVxkH/AkFbvBW4IoTs8H03LbUwd0U05fW5zS8pGG+a+ePN6H
+        1emI359fuJFrxd9h27S9yThVPZ42N8vCtdM+r23lATtzYrMaT1VGtJra38hab/8f
+        AYqSDGvBLSU97gNQ8J3EvXO/8fVG+BdgKXU=
+        -----END CERTIFICATE-----
+        -----BEGIN CERTIFICATE-----
+        MIIDjDCCAnSgAwIBAgIBATANBgkqhkiG9w0BAQsFADBXMQswCQYDVQQGEwJGUjEY
+        MBYGA1UECgwPQ2hyaXN0b3BoZSBMZWh5MRAwDgYDVQQLDAdSb290IENBMRwwGgYD
+        VQQDDBNTeW1waG9yaW5lcyBSb290IENBMB4XDTIyMDExOTE0NTI1MFoXDTMwMTIz
+        MTIzNTk1OVowVzELMAkGA1UEBhMCRlIxGDAWBgNVBAoMD0NocmlzdG9waGUgTGVo
+        eTEQMA4GA1UECwwHUm9vdCBDQTEcMBoGA1UEAwwTU3ltcGhvcmluZXMgUm9vdCBD
+        QTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANpyrbbfEeDJjR6yI+Zh
+        eFiHkRLc001S6VpElapnWXIDi0rPU4qUlLdAe2gcWcc16Kti8iHa8T1rMmCp3JSY
+        bLWj7H+HzvdAtU11qn9Tjh7tcfxlMh3a7e6IwuK2cmSirNbvSxgnihDJDnaFqtIu
+        0YwtWkeJ/AL7Ux/J9Ede+Phd2yiL16Kw9Z3hboJ95DnJO+hIUayHsj6z4LOQ3Ts5
+        kDppq9lzZiB1Hc2kUaNijg2nABpHxWOcr8GtZBwlba8sQ8/eifx5oqxqpbMp4inf
+        AdrGf3rJXfd49VPwOTb2cvziiJBcAVGDa9OMeXBLrjZN8e4kF8xlRv7vcKhs2kln
+        YbMCAwEAAaNjMGEwDgYDVR0PAQH/BAQDAgEGMA8GA1UdEwEB/wQFMAMBAf8wHQYD
+        VR0OBBYEFBedm+ggFtJiABRu1O/QdKT8yQQYMB8GA1UdIwQYMBaAFBedm+ggFtJi
+        ABRu1O/QdKT8yQQYMA0GCSqGSIb3DQEBCwUAA4IBAQA0RPYN6euBTgamILPbq1Br
+        +HNutSEO37e0L5YTuuMZb5+6S/8+yot178Oi2ZOHrvAkcIkZm7rFvIaVw/6Y02Ik
+        mDDnETIzv+gkmlFqkQUbn4qmjbhesYs+2ZdddYzBUpt9j/fQuEo/wgzkg917onQ7
+        FIc1JYy3qelbb1Y4d5KcOZ0X3ztSxj1aolrcTJG5Qqkn/2uJR4M3rMn62ynNOXZZ
+        hCioL6sgStVSWcBQpH/tIWwE6apjOh1fyV/UDQDtHdi48dQ1ivdTXWokxchJ++tc
+        L8SlrSjQGSa2vzzzJ0JGMJgx/fFyRlVj+0uu/AteGPB1xNBk9z7dfM8DVgSTQFOg
+        -----END CERTIFICATE-----
+    # -- Specifies if the argocd-tls-certs-cm configmap should be created by Helm.
+    create: true
+
+server:
+  ingress:
+    enabled: false
+
