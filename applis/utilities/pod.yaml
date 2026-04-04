@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tools
+spec:
+  containers:
+  - name: utilities
+    image: gitea.symphorines.home/chris/utilities:v4.0
+    ports:
+    - containerPort: 80
