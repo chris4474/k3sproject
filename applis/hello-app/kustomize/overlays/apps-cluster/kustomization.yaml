@@ -1,6 +1,5 @@
 resources:
 - ../../base
-- secretstore-vault.yaml
 
 patches:
 - target:
