@@ -16,20 +16,6 @@ fi
 dirsrc=$(dirname $0)
 dirdest=$dirsrc/$cluster
 
-#
-# Generate initial manifests
-#
-file_namespace=$(mktemp /tmp/namespace.XXXX)
-file_tls_secret=$(mktemp /tmp/tls_secret.XXXX)
-envsubst <${dirsrc}/namespace.tpl >${file_namespace}
-envsubst <${dirsrc}/tls-secret.tpl >${file_tls_secret}
-
-#
-# Apply initial manifests
-#
-kubectl apply -f ${file_namespace}
-kubectl apply -f ${file_tls_secret}
-
 argo_repo=https://argoproj.github.io/argo-helm
 if ! helm repo list | grep  -q $argo_repo
 then
@@ -37,6 +23,11 @@ then
    helm repo add argo $argo_repo
 fi
 helm repo update argo
+
+#
+# deploy assets likes namespace and secret for use by INgress
+#
+kubectl apply -k $dirsrc/kustomize/overlays/rpi-cluster/
 
 #
 # Generate values file for use by the helm chart
@@ -51,16 +42,3 @@ envsubst <${dirsrc}/chart-values.tpl >${chart_values}
 helm upgrade --install argocd argo/argo-cd --create-namespace --namespace argocd --values ${chart_values}
 
 
-#
-# Apply additional Manifests
-#
-[ ! -d $dirdest ] && mkdir $dirdest
-for file in ${dirsrc}/*.yaml.tpl
-do
-   if [ -f $file ]
-   then
-     outputfile=${dirdest}/$(basename $file ".tpl")
-     envsubst <$file  >${outputfile}
-     kubectl apply -f ${outputfile}
-   fi
-done
