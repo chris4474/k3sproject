@@ -32,8 +32,8 @@
   changed_when: False
   vars:
     json_data: "{{ result.stdout | from_json  }}"
-    query: 'port_settings[{{ switch_port - 1 }}]."Port Status"'
-    port_status: "{{ json_data | json_query(query) }}"
+    myquery: 'port_settings[{{ switch_port - 1 }}]."Port Status"'
+    port_status: "{{ json_data | json_query(myquery) }}"
   command: ntgrrc port settings --address={{ netgear_switch }} --output-format json
   register: result
   until:  port_status == "AVAILABLE"
