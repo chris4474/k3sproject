@@ -36,7 +36,7 @@ kubectl apply -f ${file_tls_secret}
 #
 values_file=$(mktemp /tmp/values.XXXX)
 envsubst <values.tpl >${values_file}
-helm upgrade --install headlamp headlamp/headlamp --version 0.40.0 \
+helm upgrade --install headlamp headlamp/headlamp --version 0.44.0 \
    --namespace ${namespace} \
    -f ${values_file}
 
