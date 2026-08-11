@@ -8,4 +8,4 @@
     update-rc.d -f dphys-swapfile remove
     apt purge -y dphys-swapfile
   when:
-    - ansible_swaptotal_mb > 0
+    - ansible_facts["swaptotal_mb"] > 0

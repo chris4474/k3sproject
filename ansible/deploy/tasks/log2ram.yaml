@@ -1,7 +1,7 @@
 ---
 - name: display boot device
   set_fact:
-    root_dev: "{{ ansible_mounts|json_query('[?mount == `/`].device') }}"
+    root_dev: "{{ ansible_facts['mounts']|json_query('[?mount == `/`].device') }}"
 
 - debug:
     msg: "Booting from SD Card {{ root_dev[0] }}: will install log2ram"
@@ -17,7 +17,7 @@
 - name: Install the azlux repository
   become: true
   ansible.builtin.apt_repository:
-    repo: "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ {{ ansible_distribution_release }} main"
+    repo: "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ {{ ansible_facts['distribution_release'] }} main"
     filename: azlux
     state: present
   when: root_dev[0] is match("/dev/mmcblk*")  or ( log2ram | default(false) )

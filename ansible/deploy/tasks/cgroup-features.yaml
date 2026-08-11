@@ -1,12 +1,11 @@
 ---
 - name: Enable required cgroup features.
   become: true
-  lineinfile:
-    path: /boot//firmware/cmdline.txt
-    backrefs: True
-    regexp: '(^.+rootwait(\s+(?!cgroup_memory=1 cgroup_enable=memory)[\w=/\-\.]+)*)\s*$'
+  ansible.builtin.lineinfile:
+    path: /boot/firmware/cmdline.txt
+    regexp: '^(?!.*cgroup_memory=1 cgroup_enable=memory)(.*)$'
     line: '\1 cgroup_memory=1 cgroup_enable=memory'
-    state: present
+    backrefs: true
   register: cgroup_features
 
 - name: Reboot immediately if cgroup feature changed
