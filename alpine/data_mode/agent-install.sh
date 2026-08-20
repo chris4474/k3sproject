@@ -1,4 +1,4 @@
-function check_params{}
+function check_params()
 {
 	if [ -z "$K3S_URL" ]; then
 		echo "Error : K3S_URL is undefined." >&2
@@ -75,8 +75,6 @@ function install_my_certs()
 
 function install_k3s()
 {
-	export K3S_TOKEN=<specify the token here>
-	export K3S_URL=<specify the url of the master node in the form https://<adress>:6443>
 	curl https://get.k3s.io | sh -
 }
 
