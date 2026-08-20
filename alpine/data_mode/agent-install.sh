@@ -1,3 +1,19 @@
+function check_params{}
+{
+	if [ -z "$K3S_URL" ]; then
+		echo "Error : K3S_URL is undefined." >&2
+		echo "        should in the form https://<master IP>:6443" >&2
+		return 1
+	fi
+	if [ -z "$K3S_TOKEN" ]; then
+		echo "Error : K3S_TOKEN is undefined." >&2
+		echo "        checkout /var/lib/rancher/k3s/server/node-token on the master node" >&2
+		return 1
+	fi
+	echo "Attemtping to join k3s cluster at ${K3S_URL}"
+	return
+}
+
 function set_repo()
 {
 	cat <<-__EOF__ | doas tee /etc/apk/repositories
@@ -75,6 +91,7 @@ function save_config()
 }
 
 doas whoami
+check_params || return
 set_repo
 passwordless_sudo
 passwordless_doas
