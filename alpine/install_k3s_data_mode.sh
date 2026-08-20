@@ -78,7 +78,8 @@ function save_config()
 	doas lbu add /usr/local/bin  # sauver les executables
 	doas lbu add /etc/init.d/k3s
 	doas lbu add /etc/runlevels/default/k3s
-	doas lbu commit
+	doas lbu add /usr/local/share/ca-certificates/my-ca.crt
+	doas lbu exclude ${HOME}/.kube/cache/
 	doas lbu commit
 }
 
